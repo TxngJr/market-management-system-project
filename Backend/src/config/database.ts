@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize-typescript";
+import {Sequelize} from 'sequelize';
 
 export const sequelize = new Sequelize({
   dialect: "mysql",
@@ -6,6 +6,5 @@ export const sequelize = new Sequelize({
   username: "root",
   password: "",
   database: "market_management_system",
-  models: [__dirname + '../models']
 });
 
