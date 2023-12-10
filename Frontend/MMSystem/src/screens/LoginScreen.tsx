@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 import { loginApi } from '../services/user.service';
+import { AuthContext } from '../contexts/AuthContext';
 
 interface Props extends NativeStackScreenProps<any, any> { }
 
 const LoginScreen: React.FC<Props> = ({ navigation }: any) => {
-
+    const { token, saveToken } = useContext(AuthContext)
+    useEffect(() => {
+        console.log(token)
+    }, [])
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
     const handleLogin = async () => {
         try {
             const result = await loginApi(username, password);
-            if(!result.token){
+            if (!result.token) {
                 throw new Error("have Not Token")
             }
-            await AsyncStorage.setItem('token', result.token);
+            saveToken(result.token)
+            // console.log(token)
             navigation.navigate('Home');
         } catch (error) {
             console.log('Error logging in', error);

@@ -15,7 +15,7 @@ export const Store = sequelize.define("stores", {
     },
     imagePath: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         field: "imagePath",
     },
     storeName: {

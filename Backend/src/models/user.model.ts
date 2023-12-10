@@ -25,7 +25,7 @@ export const User = sequelize.define("users", {
   },
   party: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     field: "party",
   },
 });

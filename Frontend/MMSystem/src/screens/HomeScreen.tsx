@@ -1,10 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button, Touchable, TouchableOpacity } from 'react-native';
 
 // import { getUserData } from '../services/api';  
 
-const HomeScreen: React.FC<any> = ({navigation}) => {
+const HomeScreen: React.FC<any> = ({ navigation }) => {
 
     const [user, setUser] = useState<any | null>(null);
 
@@ -13,7 +13,7 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
             try {
                 // const userData = await getUserData();
                 const token = await AsyncStorage.getItem('token');
-                if(!token){
+                if (!token) {
                     navigation.navigate('Login');
                 }
                 console.log(token)
@@ -29,13 +29,50 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
 
     return (
         <View>
-            <Text>Home Screen</Text>
-            {user && (
-                <>
-                    <Text>Name: {user.name}</Text>
-                    <Text>Email: {user.email}</Text>
-                </>
-            )}
+            <View>
+                <TouchableOpacity style={{
+                    alignItems: 'center',
+                    backgroundColor: '#DDDDDD',
+                    padding: 10,
+                }}>
+                    <Text>ตรวจสอบรายชื่อร้านค้า</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{
+                    alignItems: 'center',
+                    backgroundColor: '#DDDDDD',
+                    padding: 10,
+                }}>
+                    <Text>ตรวจสอบค่าเช่าล็อคสินค้า</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{
+                    alignItems: 'center',
+                    backgroundColor: '#DDDDDD',
+                    padding: 10,
+                }}>
+                    <Text>คำนวณค่าเช่าล็อค</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{
+                    alignItems: 'center',
+                    backgroundColor: '#DDDDDD',
+                    padding: 10,
+                }}>
+                    <Text>เก็บข้อมูลลูกค้าที่เช่าค้าขาย</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{
+                    alignItems: 'center',
+                    backgroundColor: '#DDDDDD',
+                    padding: 10,
+                }}>
+                    <Text>ออกใบแจ้งหนี้ค่าเช่า ค่าน้ำค่าไฟ</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{
+                    alignItems: 'center',
+                    backgroundColor: '#DDDDDD',
+                    padding: 10,
+                }}>
+                    <Text>รายละเอียดราคา</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };

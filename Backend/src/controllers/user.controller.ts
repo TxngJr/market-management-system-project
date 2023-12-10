@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import userService from "../services/user.service";
-import { IUser, RequestAndUser } from "../interfaces/user.interface";
+import { IUser, RequestAndUser, Role } from "../interfaces/user.interface";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -15,7 +15,8 @@ const register = async (req: Request, res: Response) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    let { id, username, password, role, party } = req.body;
+    const { id, username, password } = req.body;
+    const role = Role.ADMIN;
 
     const userExits: IUser | null = await userService.getUserByUsername(
       username
@@ -31,7 +32,6 @@ const register = async (req: Request, res: Response) => {
       username,
       hashPassword,
       role,
-      party,
     });
     if (!userCreate) {
       return res.status(500).json({ message: "Fail to register" });
@@ -78,11 +78,18 @@ const login = async (req: Request, res: Response) => {
 };
 
 const profile = async (req: RequestAndUser, res: Response) => {
-  return res.status(200).json(req.user)
+  return res.status(200).json(req.user);
+};
+
+const getParty = async (req: RequestAndUser, res: Response) => {
+  const user: IUser = req.user!;
+  const party: IUser[] | null = await userService.getUsersByParty(user.id!);
+  return res.status(200).json(party);
 };
 
 export default {
   register,
   login,
-  profile
+  profile,
+  getParty
 };

@@ -1,6 +1,7 @@
 import express from "express";
 import { sequelize } from "./config/database";
 import userRoutes from "./routes/user.route";
+import storeRoutes from "./routes/store.route";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -12,9 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 const PORT = 3000;
 
 app.use("/users", userRoutes);
-app.post("/test", (req, res) => {
-  console.log(req.body);
-});
+app.use("/stores", storeRoutes);
 
 app.listen(process.env.PORT!, async () => {
   await sequelize.sync();

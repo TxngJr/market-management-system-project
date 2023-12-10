@@ -10,19 +10,6 @@ const createUser = async (data: IUser | any): Promise<IUser | null> => {
   }
 };
 
-const getUsers = async (party: number): Promise<IUser[] | null> => {
-  try {
-    const users: any = await User.findAll({
-      where: {
-        party,
-      },
-    });
-    return users.map((user: any) => user.dataValues) as IUser[];
-  } catch (error) {
-    return null;
-  }
-};
-
 const getUserById = async (id: number): Promise<IUser | null> => {
   try {
     const user: any = await User.findByPk(id);
@@ -36,6 +23,20 @@ const getUserByUsername = async (username: string): Promise<IUser | null> => {
   try {
     const user: any = await User.findOne({ where: { username } });
     return user.dataValues as IUser;
+  } catch (error) {
+    return null;
+  }
+};
+
+const getUsersByParty = async (party: number): Promise<IUser[] | null> => {
+  try {
+    const users: any = await User.findAll({
+      where: {
+        party,
+      },
+      attributes: { exclude: ['hashPassword'] },
+    });
+    return users.map((user: any) => user.dataValues) as IUser[];
   } catch (error) {
     return null;
   }
@@ -61,9 +62,9 @@ const deleteUser = async (id: number): Promise<IUser | null> => {
 
 export default {
   createUser,
-  getUsers,
   getUserById,
   getUserByUsername,
+  getUsersByParty,
   updateUser,
   deleteUser,
 };

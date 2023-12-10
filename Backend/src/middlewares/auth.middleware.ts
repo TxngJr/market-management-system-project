@@ -12,7 +12,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export const authenticateToken = (
+const authenticateToken = (
   req: RequestAndUser,
   res: Response,
   next: NextFunction
@@ -44,3 +44,5 @@ export const authenticateToken = (
     }
   );
 };
+
+export default { authenticateToken };

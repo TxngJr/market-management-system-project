@@ -1,3 +1,10 @@
+import { IUser } from "./user.interface";
+
+export interface IRequestCreateStore{
+  store:IStore,
+  user: IUser
+}
+
 export interface IStore {
   id: number;
   userId: number;

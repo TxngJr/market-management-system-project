@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import AppStack from './navigation/AppStack';
+import AuthStack from './navigation/AuthStack';
+import { AuthContext, AuthProvider } from './contexts/AuthContext';
 
-import AppNavigator from './navigation/appNavigator';
-
-const App: React.FC = () => {
+export default function App() {
+  const { token } = useContext(AuthContext);
+  useEffect(() => {
+    // console.log(token)
+  }, [])
   return (
-    <NavigationContainer>
-      <AppNavigator />
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        {/* <AppStack /> */}
+        <AuthStack />
+      </NavigationContainer>
+    </AuthProvider>
   );
-};
-
-export default App;
+}
