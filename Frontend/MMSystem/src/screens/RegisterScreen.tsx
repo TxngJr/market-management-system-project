@@ -14,7 +14,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }: any) => {
 
     const handleLogin = async () => {
         try {
-            await registerApi(username, password);
+            await registerApi({username, password});
             navigation.navigate('Login');
         } catch (error) {
             console.log('Error logging in', error);

@@ -15,7 +15,7 @@ const register = async (req: Request, res: Response) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { id, username, password } = req.body;
+    const { username, password } = req.body;
     const role = Role.ADMIN;
 
     const userExits: IUser | null = await userService.getUserByUsername(
@@ -28,7 +28,6 @@ const register = async (req: Request, res: Response) => {
     }
     const hashPassword = await bcrypt.hash(password, 10);
     const userCreate = await userService.createUser({
-      id,
       username,
       hashPassword,
       role,

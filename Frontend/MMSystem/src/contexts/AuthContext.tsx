@@ -13,8 +13,6 @@ export const AuthContext = createContext<AuthContextType>({
   removeToken: () => { }
 });
 
-// export const useAuth = () => useContext(AuthContext);
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
 
@@ -27,7 +25,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (error) {
         console.log(error);
       }
-
       if (token) {
         setToken(token);
       } else {
@@ -35,7 +32,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
     checkToken();
-  }, [])
+  }, []);
+
 
   const saveToken = async (token: string) => {
     try {
@@ -47,7 +45,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
   const removeToken = async () => {
     try {
-
       await AsyncStorage.removeItem('token');
       setToken(null);
     } catch (error) {

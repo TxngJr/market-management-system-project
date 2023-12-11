@@ -6,31 +6,14 @@ import { View, Text, Button, Touchable, TouchableOpacity } from 'react-native';
 
 const HomeScreen: React.FC<any> = ({ navigation }) => {
 
-    const [user, setUser] = useState<any | null>(null);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                // const userData = await getUserData();
-                const token = await AsyncStorage.getItem('token');
-                if (!token) {
-                    navigation.navigate('Login');
-                }
-                console.log(token)
-                const userData = { name: "hello", email: "txngjr@gmail.com" };
-                setUser(userData);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        fetchUser();
-    }, []);
+    // const [user, setUser] = useState<any | null>(null);
 
     return (
         <View>
             <View>
-                <TouchableOpacity style={{
+                <TouchableOpacity
+                onPress={()=>(navigation.navigate('Profile'))}
+                style={{
                     alignItems: 'center',
                     backgroundColor: '#DDDDDD',
                     padding: 10,
