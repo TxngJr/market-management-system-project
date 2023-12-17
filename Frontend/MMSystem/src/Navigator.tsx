@@ -5,6 +5,9 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import { AuthContext } from './contexts/AuthContext';
+import CheckListStoresScreen from './screens/CheckListStoresScreen';
+import EditStoreScreen from './screens/EditStoreScreen';
+import AddStoreScreen from './screens/AddStoreScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +25,9 @@ export default function Navigator() {
                         (
                             <>
                                 <Stack.Screen name="Home" component={HomeScreen} />
+                                <Stack.Screen name="CheckListStores" component={CheckListStoresScreen} />
+                                <Stack.Screen name="EditStore" component={EditStoreScreen} />
+                                <Stack.Screen name="AddStore" component={AddStoreScreen} />
                             </>
                         ) :
                         (

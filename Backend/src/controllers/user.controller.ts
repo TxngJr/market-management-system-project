@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import userService from "../services/user.service";
-import { IUser, RequestAndUser, Role } from "../interfaces/user.interface";
+import { IUserCreate, IUser, RequestAndUser, Role } from "../interfaces/user.interface";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -15,7 +15,7 @@ const register = async (req: Request, res: Response) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { username, password } = req.body;
+    const { username, password }:IUserCreate = req.body;
     const role = Role.ADMIN;
 
     const userExits: IUser | null = await userService.getUserByUsername(
@@ -33,7 +33,7 @@ const register = async (req: Request, res: Response) => {
       role,
     });
     if (!userCreate) {
-      return res.status(500).json({ message: "Fail to register" });
+      return res.status(404).json({ message: "Fail to register" });
     }
     return res.status(201).json({ message: "Create user success" });
   } catch (error) {
@@ -67,7 +67,7 @@ const login = async (req: Request, res: Response) => {
       { id: String(user.id) },
       process.env.JWT_SECRET!,
       {
-        expiresIn: "1h",
+        expiresIn: "5h",
       }
     );
     return res.status(200).json({ token: token });
@@ -90,5 +90,5 @@ export default {
   register,
   login,
   profile,
-  getParty
+  getParty,
 };

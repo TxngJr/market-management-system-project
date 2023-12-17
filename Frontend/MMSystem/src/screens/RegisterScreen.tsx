@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { registerApi } from '../services/user.service';
+import { IRegisterForm } from '../interfaces/user.interface';
 
 interface Props extends NativeStackScreenProps<any, any> { }
 
 const LoginScreen: React.FC<Props> = ({ navigation }: any) => {
 
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const [user, setUser] = useState<IRegisterForm>({
+        username: "",
+        password: "",
+        confirmPassword: "",
+    });
 
     const handleLogin = async () => {
         try {
-            await registerApi({username, password});
+            await registerApi({ username: user!.username, password: user!.password });
             navigation.navigate('Login');
         } catch (error) {
             console.log('Error logging in', error);
@@ -26,31 +29,35 @@ const LoginScreen: React.FC<Props> = ({ navigation }: any) => {
             <Text>สมัครสมาชิก</Text>
             <Text>ชื่อผู้ใช้</Text>
             <TextInput
-                value={username}
-                onChangeText={setUsername}
+                value={user?.username}
+                onChangeText={(text: string) => setUser({ ...user!, username: text })}
                 placeholder="ชื่อผู้ใช้"
             />
             <Text>รหัสผ่าน</Text>
             <TextInput
-                value={password}
-                onChangeText={setPassword}
+                value={user?.password}
+                onChangeText={(text: string) => setUser({ ...user!, password: text })}
                 placeholder="รหัสผ่าน"
                 secureTextEntry
             />
             <Text>ยื่นยันรหัสผ่าน</Text>
             <TextInput
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
+                value={user?.confirmPassword}
+                onChangeText={(text: string) => setUser({ ...user!, confirmPassword: text })}
                 placeholder="ยืนยันรหัสผ่าน"
                 secureTextEntry
             />
-            <Button title="สมัครสมาชิก"
-                disabled={password.length < 8 || password != confirmPassword}
-                onPress={handleLogin} />
-            <Button
-                title="มีบัญชีแล้ว"
-                onPress={() => navigation.navigate('Login')}
-            />
+            <TouchableOpacity
+                disabled={user.username.length < 4 || user.password.length < 8 || user.password != user.confirmPassword}
+                onPress={handleLogin} >
+                <Text>สมัครสมาชิก</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Login')}>
+                <Text>
+                    มีบัญชีแล้ว
+                </Text>
+            </TouchableOpacity>
         </View>
     );
 };

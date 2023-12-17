@@ -3,7 +3,6 @@ import {
   ILoginApiResponse,
   IRegisterApiRequest,
   IRegisterApiResponse,
-  IUser,
   IUserApiResponse,
 } from '../interfaces/user.interface';
 
@@ -23,6 +22,9 @@ export const registerApi = async (
         ...data,
       }),
     });
+    if(response.status != 201){
+      throw new Error("Have somthing error");
+    }
     const responseObject: IRegisterApiResponse = await response.json();
     return responseObject;
   } catch (error) {

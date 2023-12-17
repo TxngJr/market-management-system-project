@@ -7,6 +7,12 @@ export interface IUser {
   updatedAt?: Date;
 }
 
+export interface IRegisterForm {
+  username: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export interface IRegisterApiRequest {
   username: string;
   password: string;
@@ -14,6 +20,11 @@ export interface IRegisterApiRequest {
 
 export interface IRegisterApiResponse {
   message?: string;
+}
+
+export interface ILoginForm {
+  username: string;
+  password: string;
 }
 
 export interface ILoginApiRequest {

@@ -14,16 +14,23 @@ export interface IUserDecodeJwt {
   id: number;
 }
 
-export interface RequestAndUser extends Request{
-  user?: IUser
+export interface RequestAndUser extends Request {
+  user?: IUser;
 }
 
-export interface ResponseAndUser extends Response{
-  user?: IUser
+export interface ResponseAndUser extends Response {
+  user?: IUser;
 }
 
-export interface NextFunctionAndUser extends NextFunction{
-  user?: IUser
+export interface NextFunctionAndUser extends NextFunction {
+  user?: IUser;
+}
+
+export interface IUserCreate {
+  username: string;
+  password: string;
+  role:Role;
+  party:number;
 }
 
 export const enum Role {

@@ -32,7 +32,7 @@ const authenticateToken = (
       decode: IUserDecodeJwt | any
     ): Promise<NextFunctionAndUser | ResponseAndUser | any> => {
       if (err) {
-        return res.status(403).json({ message: "Forbidden" });
+        return res.status(403).json({ message: "Token is expired" });
       }
       const user: IUser | null = await userService.getUserById(decode.id);
       if (!user) {

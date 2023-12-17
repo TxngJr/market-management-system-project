@@ -1,23 +1,22 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, Touchable, TouchableOpacity } from 'react-native';
-
-// import { getUserData } from '../services/api';  
+import React, { useContext } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { AuthContext } from '../contexts/AuthContext';
 
 const HomeScreen: React.FC<any> = ({ navigation }) => {
-
-    // const [user, setUser] = useState<any | null>(null);
-
+    const { removeToken } = useContext(AuthContext);
     return (
         <View>
             <View>
+                <Text>MMS</Text>
+            </View>
+            <View>
                 <TouchableOpacity
-                onPress={()=>(navigation.navigate('Profile'))}
-                style={{
-                    alignItems: 'center',
-                    backgroundColor: '#DDDDDD',
-                    padding: 10,
-                }}>
+                    onPress={() => (navigation.navigate('CheckListStores'))}
+                    style={{
+                        alignItems: 'center',
+                        backgroundColor: '#DDDDDD',
+                        padding: 10,
+                    }}>
                     <Text>ตรวจสอบรายชื่อร้านค้า</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{
@@ -56,6 +55,7 @@ const HomeScreen: React.FC<any> = ({ navigation }) => {
                     <Text>รายละเอียดราคา</Text>
                 </TouchableOpacity>
             </View>
+            <TouchableOpacity onPress={removeToken}><Text>logout</Text></TouchableOpacity>
         </View>
     );
 };

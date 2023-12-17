@@ -14,5 +14,15 @@ router.post(
   authMiddleware.authenticateToken,
   storeController.createStore
 );
+router.put(
+  "/update-store-party",
+  authMiddleware.authenticateToken,
+  storeController.updateStore
+);
+router.delete(
+  "/delete-store-party",
+  authMiddleware.authenticateToken,
+  storeController.deleteStore
+);
 
 export default router;
