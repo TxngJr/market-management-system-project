@@ -74,14 +74,14 @@ const updateStore = async (req: RequestAndUser, res: Response) => {
     const user: IUser = req.user!;
 
     const data: IRequestUpdateStore = req.body;
-    const storeExits: IStore | null =
-      await storeService.checkAreaStoreExistsParty(data.area, user.id!);
+    // const storeExits: IStore | null =
+    //   await storeService.checkAreaStoreExistsParty(data.area, user.id!);
 
-    if (storeExits && storeExits.area != data.area) {
-      return res.status(400).json({
-        message: `Has This Area ${data.area}`,
-      });
-    }
+    // if (storeExits?.area != data.area) {
+    //   return res.status(400).json({
+    //     message: `Has This Area ${data.area}`,
+    //   });
+    // }
 
     const storeCheck: IStore | null = await storeService.getStoreById(data.id);
     if (user.id != storeCheck?.party && user.id != storeCheck?.userId) {

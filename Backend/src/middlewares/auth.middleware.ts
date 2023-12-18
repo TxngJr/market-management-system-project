@@ -34,9 +34,12 @@ const authenticateToken = (
       if (err) {
         return res.status(403).json({ message: "Token is expired" });
       }
-      const user: IUser | null = await userService.getUserById(decode.id);
+      let user: IUser | null = await userService.getUserById(decode.id);
       if (!user) {
         return res.status(403).json({ message: "User Not Found" });
+      }
+      if (user.role == "admin") {
+        user.party = user.id;
       }
       delete user.hashPassword;
       req.user = user;
