@@ -22,24 +22,14 @@ const CheckListStores: React.FC<CheckListStoresProps> = ({ navigation }) => {
   const { token, removeToken } = useContext(AuthContext);
   const [listStore, setListStore] = useState<IStore[]>();
 
-  // useEffect(() => {
-  //   const fetchStoreData = async () => {
-  //     const stores: ApiResponse<IStoreGetPartyApiResponse> =
-  //       await getStorePartyApi(token!);
-  //     if (!stores.status) {
-  //       return removeToken();
-  //     }
-  //     console.log("new")
-  //     return setListStore(stores.data);
-  //   };
-  //   fetchStoreData();
-  // }, []);
-
   const fetchStoreData = async () => {
     const stores: ApiResponse<IStoreGetPartyApiResponse> =
       await getStorePartyApi(token!);
     if (!stores.status) {
       return removeToken();
+    }
+    if (!Array.isArray(stores.data)) {
+      return setListStore([stores.data]);
     }
     return setListStore(stores.data);
   };

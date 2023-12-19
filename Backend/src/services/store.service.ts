@@ -1,4 +1,8 @@
-import { IStore, Area, IRequestUpdateStore } from "../interfaces/store.interface";
+import {
+  IStore,
+  Area,
+  IRequestUpdateStore,
+} from "../interfaces/store.interface";
 import { Store } from "../models/store.model";
 
 const createStore = async (data: IStore | any): Promise<IStore | null> => {
@@ -40,9 +44,7 @@ const checkAreaStoreExistsParty = async (
   }
 };
 
-const getAreaStoresParty = async (
-  party: number,
-): Promise<Area[] | null> => {
+const getAreaStoresParty = async (party: number): Promise<Area[] | null> => {
   try {
     const stores: any = await Store.findAll({
       where: {
@@ -75,6 +77,15 @@ const getStoreByUsername = async (
   }
 };
 
+const getStoreByUserId = async (userId: number): Promise<IStore | null> => {
+  try {
+    const store: any = await Store.findOne({ where: { userId } });
+    return store.dataValues as IStore;
+  } catch (error) {
+    return null;
+  }
+};
+
 const updateStore = async (data: IRequestUpdateStore): Promise<boolean> => {
   try {
     const store: any = await Store.update(data, { where: { id: data.id } });
@@ -100,6 +111,7 @@ export default {
   getAreaStoresParty,
   getStoreById,
   getStoreByUsername,
+  getStoreByUserId,
   updateStore,
   deleteStore,
 };

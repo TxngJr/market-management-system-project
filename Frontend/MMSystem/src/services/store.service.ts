@@ -115,7 +115,9 @@ export const getStorePartyApi = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    const responseObject: IStoreGetPartyApiResponse[] = await response.json();
+    const responseObject:
+      | IStoreGetPartyApiResponse[]
+      | IStoreGetPartyApiResponse = await response.json();
     let result: ApiResponse<any> = {
       status: true,
       message: '',

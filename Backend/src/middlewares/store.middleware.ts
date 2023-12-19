@@ -19,10 +19,9 @@ const checkAccessPermissionStore = async (
     return res.status(400).json({ message: "Store not found" });
   }
 
-  if(store.userId !== req.user!.id && role !== "admin"){
+  if (store.userId !== req.user!.id && role !== "admin") {
     return res.status(400).json({ message: "You are not owner" });
   }
-
 
   if (store.party !== party) {
     return res.status(400).json({ message: "You are not owner" });

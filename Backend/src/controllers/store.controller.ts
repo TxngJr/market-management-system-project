@@ -91,10 +91,12 @@ const updateStore = async (req: RequestAndUser, res: Response) => {
 const deleteStore = async (req: RequestAndUser, res: Response) => {
   try {
     const { id } = req.body;
-    const storeDelete: IStore | null = await storeService.deleteStore(id);
-    if (!storeDelete) {
+    const store: IStore | null = await storeService.getStoreById(id);
+    if (!store) {
       return res.status(400).json({ message: "Store not found" });
     }
+    await storeService.deleteStore(store.id);
+    await userService.deleteUser(store.userId);
     return res.status(201).json({ message: "Delete success" });
   } catch (error) {
     return res.status(500).json({ message: "Fail to create" });
@@ -102,21 +104,30 @@ const deleteStore = async (req: RequestAndUser, res: Response) => {
 };
 
 const getStoreParty = async (req: RequestAndUser, res: Response) => {
-  const { party } = req.user!;
-  const store: IStore[] | null = await storeService.getStoresParty(party!);
-  if (!store) {
-    return res.status(400).json({ message: "Store not found" });
+  const { id, role, party } = req.user!;
+  if (role !== "admin") {
+    const store: IStore | null = await storeService.getStoreByUserId(id!);
+    if (!store) {
+      return res.status(400).json({ message: "Store not found" });
+    }
+    return res.status(200).json(store);
+  } else {
+    const stores: IStore[] | null = await storeService.getStoresParty(party!);
+    if (!stores) {
+      return res.status(400).json({ message: "Store not found" });
+    }
+    return res.status(200).json(stores);
   }
-  return res.status(200).json(store);
 };
 
 const getAreaStoreParty = async (req: RequestAndUser, res: Response) => {
   const { party } = req.user!;
-  const store: Area[] | null = await storeService.getAreaStoresParty(party!);
-  if (!store) {
+  const areas: Area[] | null = await storeService.getAreaStoresParty(party!);
+  if (!areas) {
     return res.status(400).json({ message: "Store not found" });
   }
-  return res.status(200).json(store);
+
+  return res.status(200).json(areas);
 };
 
 export default {
@@ -124,5 +135,5 @@ export default {
   updateStore,
   deleteStore,
   getStoreParty,
-  getAreaStoreParty
+  getAreaStoreParty,
 };
