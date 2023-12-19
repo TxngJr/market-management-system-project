@@ -12,7 +12,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const authenticateToken = (
+const authenticateToken = async (
   req: RequestAndUser,
   res: Response,
   next: NextFunction

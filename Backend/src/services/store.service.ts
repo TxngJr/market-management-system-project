@@ -42,16 +42,14 @@ const checkAreaStoreExistsParty = async (
 
 const getAreaStoresParty = async (
   party: number,
-  area: Area
-): Promise<IStore[] | null> => {
+): Promise<Area[] | null> => {
   try {
     const stores: any = await Store.findAll({
       where: {
         party,
-        area,
       },
     });
-    return stores.map((store: any) => store.dataValues) as IStore[];
+    return stores.map((store: any) => store.dataValues.area) as Area[];
   } catch (error) {
     return null;
   }

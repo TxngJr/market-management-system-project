@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 import {
   Area,
   IRequestCreateStore,
-  IRequestDeleteStore,
   IRequestUpdateStore,
   IStore,
 } from "../interfaces/store.interface";
@@ -17,7 +16,7 @@ dotenv.config();
 const createStore = async (req: RequestAndUser, res: Response) => {
   try {
     const user: IUser = req.user!;
-    if (user.role == "user") {
+    if (user.role !== "admin") {
       return res.status(400).json({ message: "You are not admin" });
     }
     const data: IRequestCreateStore = req.body;
@@ -71,22 +70,11 @@ const createStore = async (req: RequestAndUser, res: Response) => {
 
 const updateStore = async (req: RequestAndUser, res: Response) => {
   try {
-    const user: IUser = req.user!;
-
     const data: IRequestUpdateStore = req.body;
-    // const storeExits: IStore | null =
-    //   await storeService.checkAreaStoreExistsParty(data.area, user.id!);
 
-    // if (storeExits?.area != data.area) {
-    //   return res.status(400).json({
-    //     message: `Has This Area ${data.area}`,
-    //   });
-    // }
-
-    const storeCheck: IStore | null = await storeService.getStoreById(data.id);
-    if (user.id != storeCheck?.party && user.id != storeCheck?.userId) {
+    if (!Object.values(Area).includes(data.area)) {
       return res.status(400).json({
-        message: `You can't edit this store`,
+        message: `Have not Area ${data.area}`,
       });
     }
 
@@ -102,34 +90,32 @@ const updateStore = async (req: RequestAndUser, res: Response) => {
 
 const deleteStore = async (req: RequestAndUser, res: Response) => {
   try {
-    const user: IUser = req.user!;
-
-    const data: IRequestDeleteStore = req.body;
-
-    const storeDelete: IStore | null = await storeService.deleteStore(data.id);
-    console.log(storeDelete);
-    // if (user.id != storeCheck?.party && user.id != storeCheck?.userId) {
-    //   return res.status(400).json({
-    //     message: `You can't edit this store`,
-    //   });
-    // }
-
-    // const store = await storeService.updateStore(data);
-    // if (!store) {
-    //   return res.status(500).json({ message: "Fail to UpdateStore" });
-    // }
-    return res.status(201).json({ message: "Update success" });
+    const { id } = req.body;
+    const storeDelete: IStore | null = await storeService.deleteStore(id);
+    if (!storeDelete) {
+      return res.status(400).json({ message: "Store not found" });
+    }
+    return res.status(201).json({ message: "Delete success" });
   } catch (error) {
     return res.status(500).json({ message: "Fail to create" });
   }
 };
 
 const getStoreParty = async (req: RequestAndUser, res: Response) => {
-  const user: IUser = req.user!;
-  if (user!.role == "admin") {
-    user!.party = user!.id;
+  const { party } = req.user!;
+  const store: IStore[] | null = await storeService.getStoresParty(party!);
+  if (!store) {
+    return res.status(400).json({ message: "Store not found" });
   }
-  const store = await storeService.getStoresParty(user.party!);
+  return res.status(200).json(store);
+};
+
+const getAreaStoreParty = async (req: RequestAndUser, res: Response) => {
+  const { party } = req.user!;
+  const store: Area[] | null = await storeService.getAreaStoresParty(party!);
+  if (!store) {
+    return res.status(400).json({ message: "Store not found" });
+  }
   return res.status(200).json(store);
 };
 
@@ -138,4 +124,5 @@ export default {
   updateStore,
   deleteStore,
   getStoreParty,
+  getAreaStoreParty
 };
