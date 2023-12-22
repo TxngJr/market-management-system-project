@@ -9,6 +9,7 @@ import {
   IRequestCreateStore,
   IRequestUpdateStore,
   IStore,
+  RentalType,
 } from "../interfaces/store.interface";
 
 dotenv.config();
@@ -26,9 +27,14 @@ const createStore = async (req: RequestAndUser, res: Response) => {
         message: `Have not Area ${data.store.area}`,
       });
     }
+    if (!Object.values(RentalType).includes(data.store.rentalType)) {
+      return res.status(400).json({
+        message: `Have not rentalType ${data.store.rentalType}`,
+      });
+    }
 
     const storeExits: IStore | null =
-      await storeService.checkAreaStoreExistsParty(data.store.area, user.id!);
+      await storeService.checkAreaStoreExistsParty(data.store.area, user.party!);
     if (storeExits) {
       return res.status(400).json({
         message: `Has This Area ${data.store.area}`,
@@ -75,6 +81,11 @@ const updateStore = async (req: RequestAndUser, res: Response) => {
     if (!Object.values(Area).includes(data.area)) {
       return res.status(400).json({
         message: `Have not Area ${data.area}`,
+      });
+    }
+    if (!Object.values(RentalType).includes(data.rentalType)) {
+      return res.status(400).json({
+        message: `Have not rentalType ${data.rentalType}`,
       });
     }
 
@@ -126,7 +137,6 @@ const getAreaStoreParty = async (req: RequestAndUser, res: Response) => {
   if (!areas) {
     return res.status(400).json({ message: "Store not found" });
   }
-
   return res.status(200).json(areas);
 };
 

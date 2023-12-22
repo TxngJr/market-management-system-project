@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useState } from 'react';
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
+import { ApiResponse } from '../interfaces/gobal.interface';
+import { IRegisterApiResponse, IRegisterForm } from '../interfaces/user.interface';
 import { registerApi } from '../services/user.service';
-import { IRegisterForm } from '../interfaces/user.interface';
 
 interface Props extends NativeStackScreenProps<any, any> { }
 
@@ -15,13 +16,13 @@ const LoginScreen: React.FC<Props> = ({ navigation }: any) => {
         confirmPassword: "",
     });
 
-    const handleLogin = async () => {
-        try {
-            await registerApi({ username: user!.username, password: user!.password });
-            navigation.navigate('Login');
-        } catch (error) {
-            console.log('Error logging in', error);
+    const handleRegister = async () => {
+        const isRegister: ApiResponse<IRegisterApiResponse> =
+            await registerApi(user);
+        if (!isRegister.status) {
+            return Alert.alert("สมัครไม่สำเร็จ", "เกิดข้อผิดพลาด");
         }
+        return navigation.navigate('Login');
     }
 
     return (
@@ -49,7 +50,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }: any) => {
             />
             <TouchableOpacity
                 disabled={user.username.length < 4 || user.password.length < 8 || user.password != user.confirmPassword}
-                onPress={handleLogin} >
+                onPress={handleRegister} >
                 <Text>สมัครสมาชิก</Text>
             </TouchableOpacity>
             <TouchableOpacity

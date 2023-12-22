@@ -1,3 +1,4 @@
+import { ApiResponse } from '../interfaces/gobal.interface';
 import {
   ILoginApiRequest,
   ILoginApiResponse,
@@ -10,7 +11,7 @@ const URL_SERVER = 'http://192.168.1.45:3000';
 
 export const registerApi = async (
   data: IRegisterApiRequest,
-): Promise<IRegisterApiResponse> => {
+): Promise<ApiResponse<any>> => {
   try {
     const response = await fetch(URL_SERVER + '/users/register', {
       method: 'POST',
@@ -22,19 +23,24 @@ export const registerApi = async (
         ...data,
       }),
     });
-    if(response.status != 201){
-      throw new Error("Have somthing error");
+    const responseObject: {message: string} = await response.json();
+    let result: ApiResponse<any> = {
+      status: true,
+      message: responseObject.message,
+      data: responseObject,
+    };
+    if (response.status != 201) {
+      result.status = false;
     }
-    const responseObject: IRegisterApiResponse = await response.json();
-    return responseObject;
+    return result;
   } catch (error) {
-    return {message: 'Have somthing error'};
+    return {status: false, message: 'Have Somthing Wrong'};
   }
 };
 
 export const loginApi = async (
   data: ILoginApiRequest,
-): Promise<ILoginApiResponse> => {
+): Promise<ApiResponse<any>> => {
   try {
     const response: Response = await fetch(URL_SERVER + '/users/login', {
       method: 'POST',
@@ -46,16 +52,24 @@ export const loginApi = async (
         ...data,
       }),
     });
-    const responseObject: ILoginApiResponse = await response.json();
-    return responseObject;
+    const responseObject: {message: string} = await response.json();
+    let result: ApiResponse<any> = {
+      status: true,
+      message: responseObject.message,
+      data: responseObject,
+    };
+    if (response.status != 200) {
+      result.status = false;
+    }
+    return result;
   } catch (error) {
-    return {message: 'Have somthing error'};
+    return {status: false, message: 'Have Somthing Wrong'};
   }
 };
 
 export const selfApi = async (
   token: string,
-): Promise<IUserApiResponse | any> => {
+): Promise<ApiResponse<any>> => {
   try {
     const response: Response = await fetch(URL_SERVER + '/users/self', {
       method: 'GET',
@@ -65,16 +79,24 @@ export const selfApi = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    const responseObject: IUserApiResponse = await response.json();
-    return responseObject;
+    const responseObject: {message: string} = await response.json();
+    let result: ApiResponse<any> = {
+      status: true,
+      message: responseObject.message,
+      data: responseObject,
+    };
+    if (response.status != 200) {
+      result.status = false;
+    }
+    return result;
   } catch (error) {
-    return {message: 'Have somthing error'};
+    return {status: false, message: 'Have Somthing Wrong'};
   }
 };
 
 export const getParty = async (
   token: string,
-): Promise<IUserApiResponse[] | any> => {
+): Promise<ApiResponse<any>> => {
   try {
     const response: Response = await fetch(URL_SERVER + '/users/get-party', {
       method: 'GET',
@@ -84,9 +106,17 @@ export const getParty = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    const responseObject: IUserApiResponse[] = await response.json();
-    return responseObject;
+    const responseObject: {message: string} = await response.json();
+    let result: ApiResponse<any> = {
+      status: true,
+      message: responseObject.message,
+      data: responseObject,
+    };
+    if (response.status != 200) {
+      result.status = false;
+    }
+    return result;
   } catch (error) {
-    return {message: 'Have somthing error'};
+    return {status: false, message: 'Have Somthing Wrong'};
   }
 };

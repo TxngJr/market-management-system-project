@@ -15,6 +15,7 @@ export interface IStore {
   phoneNumber: string;
   address: string;
   area: Area;
+  rentalType:RentalType;
   party: number;
   createdAt: Date;
   updatedAt: Date;
@@ -29,10 +30,16 @@ export interface IRequestUpdateStore{
   phoneNumber: string;
   address: string;
   area: Area;
+  rentalType:RentalType;
 }
 
 export interface IRequestDeleteStore{
   id:number
+}
+
+export enum RentalType {
+  MONTH = "month",
+  YEAR = "year",
 }
 
 export enum Area {

@@ -54,6 +54,11 @@ export const Store = sequelize.define("stores", {
         allowNull: false,
         field: "area",
     },
+    rentalType: {
+        type: DataTypes.ENUM("month", "year"),
+        allowNull: false,
+        field: "rentalType",
+    },
     party: {
         type: DataTypes.INTEGER,
         allowNull: false,

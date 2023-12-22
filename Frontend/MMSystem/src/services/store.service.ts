@@ -1,5 +1,6 @@
 import {ApiResponse} from '../interfaces/gobal.interface';
 import {
+  Area,
   IStoreCreateApiRequest,
   IStoreGetPartyApiResponse,
   IStoreUpdateFormAndApiRequest,
@@ -119,6 +120,35 @@ export const getStorePartyApi = async (
       | IStoreGetPartyApiResponse[]
       | IStoreGetPartyApiResponse = await response.json();
     let result: ApiResponse<any> = {
+      status: true,
+      message: '',
+      data: responseObject,
+    };
+    if (response.status != 200) {
+      result.status = false;
+    }
+    return result;
+  } catch (error) {
+    return {status: false, message: 'Have Somthing Wrong'};
+  }
+};
+
+export const getAreaStorePartyApi = async (
+  token: string,
+): Promise<ApiResponse<Area>> => {
+  try {
+    const response: Response = await fetch(URL_SERVER + '/stores/area-store-party', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const responseObject:
+      | IStoreGetPartyApiResponse[]
+      | IStoreGetPartyApiResponse = await response.json();
+    let result: ApiResponse<Area> = {
       status: true,
       message: '',
       data: responseObject,

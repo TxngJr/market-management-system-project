@@ -1,4 +1,4 @@
-import {IRegisterApiRequest} from './user.interface';
+import { IRegisterApiRequest } from './user.interface';
 
 export interface IStore {
   id: number;
@@ -10,6 +10,7 @@ export interface IStore {
   phoneNumber: string;
   address: string;
   area: Area;
+  rentalType: RentalType;
   party: number;
   createdAt?: string;
   updatedAt?: string;
@@ -23,6 +24,7 @@ export interface IStoreFormRegister {
   phoneNumber: string;
   address: string;
   area: Area;
+  rentalType: RentalType;
 }
 
 export interface IStoreCreateApiRequest {
@@ -39,6 +41,7 @@ export interface IStoreUpdateFormAndApiRequest {
   phoneNumber: string;
   address: string;
   area: Area;
+  rentalType: RentalType;
 }
 
 export interface IStoreGetPartyApiResponse {
@@ -50,8 +53,14 @@ export interface IStoreGetPartyApiResponse {
   phoneNumber: string;
   address: string;
   area: Area;
+  rentalType: RentalType;
 }
 
+
+export enum RentalType {
+  MONTH = "month",
+  YEAR = "year",
+}
 
 export enum Area {
   A1 = 'a1',
@@ -102,3 +111,22 @@ export enum Area {
   F4 = 'f4',
   F5 = 'f5',
 }
+
+export const areaSelect = [
+  { value: Area.A1 }, { value: Area.A2 }, { value: Area.A3 }, { value: Area.A4 }, { value: Area.A5 },
+  { value: Area.B1 }, { value: Area.B2 }, { value: Area.B3 }, { value: Area.B4 }, { value: Area.B5 },
+  { value: Area.B6 }, { value: Area.B7 }, { value: Area.B8 }, { value: Area.C1 }, { value: Area.C2 },
+  { value: Area.C3 }, { value: Area.C4 }, { value: Area.C5 }, { value: Area.C6 }, { value: Area.C7 },
+  { value: Area.C8 }, { value: Area.D1 }, { value: Area.D2 }, { value: Area.D3 }, { value: Area.D4 },
+  { value: Area.D5 }, { value: Area.D6 }, { value: Area.D7 }, { value: Area.D8 }, { value: Area.E1 },
+  { value: Area.E2 }, { value: Area.E3 }, { value: Area.E4 }, { value: Area.E5 }, { value: Area.E6 },
+  { value: Area.E7 }, { value: Area.E8 }, { value: Area.F1 }, { value: Area.F2 }, { value: Area.F3 },
+  { value: Area.F4 }, { value: Area.F5 },
+]
+
+export const areaA = [{ value: Area.A1 }, { value: Area.A2 }, { value: Area.A3 }, { value: Area.A4 }, { value: Area.A5 },]
+export const areaB = [{ value: Area.B1 }, { value: Area.B2 }, { value: Area.B3 }, { value: Area.B4 }, { value: Area.B5 }, { value: Area.B6 }, { value: Area.B7 }, { value: Area.B8 }]
+export const areaC = [{ value: Area.C1 }, { value: Area.C2 }, { value: Area.C3 }, { value: Area.C4 }, { value: Area.C5 }, { value: Area.C6 }, { value: Area.C7 }, { value: Area.C8 }]
+export const areaD = [{ value: Area.D1 }, { value: Area.D2 }, { value: Area.D3 }, { value: Area.D4 }, { value: Area.D5 }, { value: Area.D6 }, { value: Area.D7 }, { value: Area.D8 }]
+export const areaE = [{ value: Area.E1 }, { value: Area.E2 }, { value: Area.E3 }, { value: Area.E4 }, { value: Area.E5 }, { value: Area.E6 }, { value: Area.E7 }, { value: Area.E8 }]
+export const areaF = [{ value: Area.F1 }, { value: Area.F2 }, { value: Area.F3 }, { value: Area.F4 }, { value: Area.F5 }]
