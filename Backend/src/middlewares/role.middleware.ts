@@ -1,8 +1,6 @@
 import { NextFunction, Response } from "express";
 import { RequestAndUser } from "../interfaces/user.interface";
 import dotenv from "dotenv";
-import storeService from "../services/store.service";
-import { IStore } from "../interfaces/store.interface";
 
 dotenv.config();
 
