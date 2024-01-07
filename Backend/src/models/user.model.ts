@@ -8,6 +8,22 @@ export const User = sequelize.define("users", {
     autoIncrement: true,
     field: "id",
   },
+  imagePath: {
+    type: DataTypes.STRING || null,
+    allowNull: true,
+    defaultValue: null,
+    field: "imagePath",
+  },
+  firstName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    field: "firstName",
+  },
+  lastName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    field: "lastName",
+  },
   username: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -18,14 +34,36 @@ export const User = sequelize.define("users", {
     allowNull: false,
     field: "hashPassword",
   },
-  role: {
-    type: DataTypes.ENUM('admin', 'user'),
+  email: {
+    type: DataTypes.STRING,
     allowNull: false,
-    field: "role",
+    field: "email",
   },
-  party: {
-    type: DataTypes.INTEGER,
+  address: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    field: "address",
+  },
+  phoneNumber: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    field: "phoneNumber",
+  },
+  isOwner: {
+    type: DataTypes.BOOLEAN,
     allowNull: true,
-    field: "party",
+    field: "isOwner",
+  },
+  landId: {
+    type: DataTypes.INTEGER || null,
+    allowNull: true,
+    defaultValue: null,
+    field: "landId",
+  },
+  storeId: {
+    type: DataTypes.INTEGER || null,
+    allowNull: true,
+    defaultValue: null,
+    field: "storeId",
   },
 });

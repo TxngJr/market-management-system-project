@@ -1,45 +1,14 @@
-import { IUserCreate } from "./user.interface";
-
-export interface IRequestCreateStore{
-  store:IStore,
-  user: IUserCreate
-}
 
 export interface IStore {
   id: number;
+  imagePath?: string;
+  name: string;
+  area: Area;
+  details?: string;
+  rentPrice: number;
+  landId: number;
   userId: number;
-  imagePath: string;
-  storeName: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  address: string;
-  area: Area;
-  rentalType:RentalType;
-  party: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface IRequestUpdateStore{
-  id:number
-  imagePath: string;
-  storeName: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  address: string;
-  area: Area;
-  rentalType:RentalType;
-}
-
-export interface IRequestDeleteStore{
-  id:number
-}
-
-export enum RentalType {
-  MONTH = "month",
-  YEAR = "year",
+  createAt: Date;
 }
 
 export enum Area {

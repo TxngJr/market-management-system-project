@@ -3,12 +3,13 @@ import { NextFunction, Request, Response } from "express";
 import userService from "../services/user.service";
 import {
   IUser,
-  IUserDecodeJwt,
   NextFunctionAndUser,
   RequestAndUser,
   ResponseAndUser,
 } from "../interfaces/user.interface";
 import dotenv from "dotenv";
+import { User } from "../models/user.model";
+import { Model } from "sequelize";
 
 dotenv.config();
 
@@ -29,20 +30,19 @@ const authenticateToken = async (
     process.env.JWT_SECRET!,
     async (
       err: jwt.VerifyErrors | null,
-      decode: IUserDecodeJwt | any
+      decode: any | { id: number }
     ): Promise<NextFunctionAndUser | ResponseAndUser | any> => {
       if (err) {
         return res.status(403).json({ message: "Token is expired" });
       }
-      let user: IUser | null = await userService.getUserById(decode.id);
-      if (!user) {
+      let findUser: Model<IUser> | null = await User.findOne({
+        where: { id: decode.id },
+      });
+      if (!findUser) {
         return res.status(403).json({ message: "User Not Found" });
       }
-      if (user.role == "admin") {
-        user.party = user.id;
-      }
-      delete user.hashPassword;
-      req.user = user;
+      delete findUser.dataValues.hashPassword;
+      req.user = findUser.dataValues;
       next();
     }
   );
