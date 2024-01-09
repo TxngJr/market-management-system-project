@@ -1,15 +1,14 @@
 import { Request, Response } from "express";
-import userService from "../services/user.service";
 import { IUser, RequestAndUser } from "../interfaces/user.interface";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import { User } from "../models/user.model";
-import { Model } from "sequelize";
+import { Model, Op } from "sequelize";
 import jwt from "jsonwebtoken";
+import { Land } from "../models/land.model";
 
 dotenv.config();
 
-// wait create land and update landId in user 
 const register = async (req: Request, res: Response) => {
   try {
     const {
@@ -60,6 +59,24 @@ const register = async (req: Request, res: Response) => {
     if (!userCreate) {
       return res.status(404).json({ message: "Fail to register" });
     }
+
+    const landCreate = await Land.create({
+      userId: userCreate.dataValues.id,
+    });
+
+    if (!landCreate) {
+      return res.status(404).json({ message: "Fail to register" });
+    }
+
+    const updateUser = await User.update(
+      { landId: landCreate.dataValues.id },
+      { where: { id: userCreate.dataValues.id } }
+    );
+
+    if (!updateUser) {
+      return res.status(404).json({ message: "Fail to register" });
+    }
+
     return res.status(201).json({ message: "Create user success" });
   } catch (error: any) {
     return res.status(500).json({ message: "Something went wrong" });
@@ -105,14 +122,106 @@ const self = async (req: RequestAndUser, res: Response) => {
   return res.status(200).json(req.user);
 };
 
-// const getParty = async (req: RequestAndUser, res: Response) => {
-//   const user: IUser = req.user!;
-//   const party: IUser[] | null = await userService.getUsersByParty(user.id!);
-//   return res.status(200).json(party);
-// };
+const updateSelf = async (req: RequestAndUser, res: Response) => {
+  const user: IUser = req.user!;
+  const {
+    imagePath,
+    firstName,
+    lastName,
+    email,
+    address,
+    phoneNumber,
+  }: {
+    imagePath?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    address?: string;
+    phoneNumber?: string;
+  } = req.body;
+
+  const updateUser: any = await User.update(
+    {
+      imagePath,
+      firstName,
+      lastName,
+      email,
+      address,
+      phoneNumber,
+    },
+    { where: { id: user.id } }
+  );
+  if (!updateUser) {
+    return res.status(404).json({ message: "Fail to update" });
+  }
+  return res.status(200).json({ message: "Update success" });
+};
+
+const getUsersByLand = async (req: RequestAndUser, res: Response) => {
+  try{
+  const user: IUser = req.user!;
+  const findUsersByLand: Model<IUser>[] | null = await User.findAll({
+    where: {
+      landId: user.landId,
+      id: { [Op.ne]: user.id },
+    },
+    attributes: { exclude: ["hashPassword"] },
+  });
+  return res.status(200).json(findUsersByLand);
+} catch (error) {
+  return res.status(500).json({ message: "Something went wrong" });
+};
+}
+
+const updateUserByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
+  try{
+  const {
+    id,
+    imagePath,
+    firstName,
+    lastName,
+    email,
+    address,
+    phoneNumber,
+  }: {
+    id: number;
+    imagePath?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    address?: string;
+    phoneNumber?: string;
+  } = req.body;
+
+  const updateUser: any = await User.update(
+    {
+      imagePath,
+      firstName,
+      lastName,
+      email,
+      address,
+      phoneNumber,
+    },
+    {
+      where: {
+        id: id,
+      },
+    }
+  );
+  if (!updateUser) {
+    return res.status(404).json({ message: "Fail to update" });
+  }
+  return res.status(200).json({ message: "Update success" });
+} catch (error) {
+  return res.status(500).json({ message: "Something went wrong" });
+}
+};
 
 export default {
   register,
   login,
-  self
+  self,
+  updateSelf,
+  getUsersByLand,
+  updateUserByOwnerOfLand
 };

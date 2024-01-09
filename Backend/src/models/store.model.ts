@@ -76,7 +76,7 @@ export const Store = sequelize.define("stores", {
   rentPrice: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    defaultValue: 0,
+    defaultValue: 2500,
     field: "rentPrice",
   },
   landId: {
@@ -89,10 +89,5 @@ export const Store = sequelize.define("stores", {
     type: DataTypes.INTEGER,
     allowNull: false,
     field: "userId",
-  },
-  createAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    field: "createAt",
   },
 });

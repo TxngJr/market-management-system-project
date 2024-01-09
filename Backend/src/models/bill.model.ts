@@ -1,5 +1,6 @@
-import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database";
+import { DataTypes } from 'sequelize';
+
 
 export const Bill = sequelize.define("bills", {
   id: {
@@ -67,10 +68,5 @@ export const Bill = sequelize.define("bills", {
     allowNull: false,
     defaultValue: 0,
     field: "storeId",
-  },
-  createAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    field: "createAt",
   },
 });

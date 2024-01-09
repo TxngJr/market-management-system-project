@@ -1,43 +1,37 @@
 import { Router } from "express";
 import storeController from "../controllers/store.controller";
 import authMiddleware from "../middlewares/auth.middleware";
-import storeMiddleware from "../middlewares/store.middleware";
-import roleMiddleware from "../middlewares/role.middleware";
-
+import accessPermissionMiddleware from "../middlewares/accessPermission.middleware";
 const router = Router();
-router.get(
-  "/store-party",
-  authMiddleware.authenticateToken,
-  storeController.getStoreParty
-);
-router.get(
-  "/area-store-party",
-  authMiddleware.authenticateToken,
-  storeController.getAreaStoreParty
-);
-router.get(
-  "/store-area-party",
-  authMiddleware.authenticateToken,
-  storeController.getAreaStoreParty
-);
 router.post(
-  "/create-store-party",
+  "/create-store",
   authMiddleware.authenticateToken,
-  storeController.createStore
+  storeController.createStoreAndUserOfStore
+);
+
+router.get(
+  "/get-stores-by-land",
+  authMiddleware.authenticateToken,
+  storeController.getStoreByLand
+);
+
+router.get(
+  "/store-area-has",
+  authMiddleware.authenticateToken,
+  storeController.getAreaStoreHas
 );
 router.put(
-  "/update-store-party",
+  "/update-store",
   authMiddleware.authenticateToken,
-  storeMiddleware.checkAccessPermissionStore,
-  storeController.updateStore
-);
-router.delete(
-  "/delete-store-party",
-  authMiddleware.authenticateToken,
-  storeMiddleware.checkAccessPermissionStore,
-  roleMiddleware.checkAccessPermissionAdmin,
-  storeController.deleteStore
+  accessPermissionMiddleware.accessPermission,
+  storeController.updateStoreByOwnerOfLand
 );
 
+router.delete(
+  "/delete-store",
+  authMiddleware.authenticateToken,
+  accessPermissionMiddleware.accessPermission,
+  storeController.deleteStoreByOwnerOfLand
+);
 
 export default router;

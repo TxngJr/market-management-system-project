@@ -1,95 +1,177 @@
 import { Response } from "express";
-import userService from "../services/user.service";
-import storeService from "../services/store.service";
-import { IUser, RequestAndUser, Role } from "../interfaces/user.interface";
+import { IUser, RequestAndUser } from "../interfaces/user.interface";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import {
-  Area,
-  IRequestCreateStore,
-  IRequestUpdateStore,
-  IStore,
-  RentalType,
-} from "../interfaces/store.interface";
+import { Area, IStore } from "../interfaces/store.interface";
+import { User } from "../models/user.model";
+import { Model, Op, where } from "sequelize";
+import { Store } from "../models/store.model";
 
 dotenv.config();
 
-const createStore = async (req: RequestAndUser, res: Response) => {
+const createStoreAndUserOfStore = async (
+  req: RequestAndUser,
+  res: Response
+) => {
   try {
-    const user: IUser = req.user!;
-    if (user.role !== "admin") {
-      return res.status(400).json({ message: "You are not admin" });
-    }
-    const data: IRequestCreateStore = req.body;
+    const user = req.user!;
+    const {
+      //user
+      firstName,
+      lastName,
+      username,
+      password,
+      email,
+      address,
+      phoneNumber,
+      //store
+      imagePath,
+      name,
+      area,
+      details,
+    }: {
+      //user
+      firstName: string;
+      lastName: string;
+      username: string;
+      password: string;
+      email: string;
+      address: string;
+      phoneNumber: string;
+      //store
+      imagePath?: string;
+      name: string;
+      area: Area;
+      details?: string;
+    } = req.body;
 
-    if (!Object.values(Area).includes(data.store.area)) {
+    if (!Object.values(Area).includes(area)) {
       return res.status(400).json({
-        message: `Have not Area ${data.store.area}`,
+        message: `Have not Area ${area}`,
       });
     }
-    if (!Object.values(RentalType).includes(data.store.rentalType)) {
+
+    const findAreaOfStore: Model<IStore> | null = await Store.findOne({
+      where: { landId: user.landId, area },
+    });
+
+    if (findAreaOfStore) {
       return res.status(400).json({
-        message: `Have not rentalType ${data.store.rentalType}`,
+        message: `There is already a store in ${area}.`,
       });
     }
 
-    const storeExits: IStore | null =
-      await storeService.checkAreaStoreExistsParty(data.store.area, user.party!);
-    if (storeExits) {
+    const exitUser: Model<IUser> | null = await User.findOne({
+      where: { username },
+    });
+    if (exitUser) {
       return res.status(400).json({
-        message: `Has This Area ${data.store.area}`,
+        message: `There is already a user named ${username}.`,
       });
     }
-
-    const userExits: IUser | null = await userService.getUserByUsername(
-      data.user.username
-    );
-    if (userExits) {
-      return res.status(400).json({
-        message: `There is already a user named ${userExits.username}.`,
-      });
-    }
-
-    data.user.password = await bcrypt.hash(data.user.password!, 10);
-    data.user.role = Role.USER;
-    data.user.party = user.id!;
-    const userCreate = await userService.createUser({
-      ...data.user,
-      hashPassword: data.user.password,
+    const hashPassword: string = await bcrypt.hash(password, 10);
+    const isOwner: boolean = false;
+    const dataUser = {
+      firstName,
+      lastName,
+      username,
+      hashPassword,
+      email,
+      address,
+      phoneNumber,
+      isOwner,
+      landId: user.landId,
+    };
+    const userCreate: Model<IUser> | null = await User.create({
+      ...dataUser,
     });
 
     if (!userCreate) {
-      return res.status(500).json({ message: "Fail to createUser" });
+      return res.status(404).json({ message: "Fail to register" });
     }
 
-    data.store.party = user.id!;
-    data.store.userId = userCreate.id!;
-    const store = await storeService.createStore({ ...data.store });
-    if (!store) {
-      return res.status(500).json({ message: "Fail to createStore" });
+    const dataStore = {
+      imagePath,
+      name,
+      area,
+      details,
+      userId: userCreate.dataValues.id,
+      landId: user.landId,
+    };
+    const storeCreate = await Store.create({
+      ...dataStore,
+    });
+
+    if (!storeCreate) {
+      return res.status(404).json({ message: "Fail to register" });
     }
-    return res.status(201).json({ message: "Create success" });
-  } catch (error) {
-    return res.status(500).json({ message: "Fail to create" });
+
+    const updateUser = await User.update(
+      { storeId: storeCreate.dataValues.id },
+      { where: { id: userCreate.dataValues.id } }
+    );
+
+    if (!updateUser) {
+      return res.status(404).json({ message: "Fail to register" });
+    }
+
+    return res.status(201).json({ message: "Create store and user success" });
+  } catch (error: any) {
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 
-const updateStore = async (req: RequestAndUser, res: Response) => {
+const getStoreByLand = async (req: RequestAndUser, res: Response) => {
   try {
-    const data: IRequestUpdateStore = req.body;
+    const user: IUser = req.user!;
+    const findUsersByLand: Model<IUser>[] | null = await Store.findAll({
+      where: {
+        landId: user.landId,
+        id: { [Op.ne]: user.id },
+      },
+      attributes: { exclude: ["hashPassword"] },
+    });
+    return res.status(200).json(findUsersByLand);
+  } catch (error: any) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
 
-    if (!Object.values(Area).includes(data.area)) {
+const getAreaStoreHas = async (req: RequestAndUser, res: Response) => {
+  const { landId } = req.user!;
+  const areas: Model<Area>[] | null = await Store.findAll({
+    where: { landId },
+    attributes: ["area"],
+  });
+  if (!areas) {
+    return res.status(400).json({ message: "Store not found" });
+  }
+  return res.status(200).json(areas);
+};
+
+const updateStoreByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
+  try {
+    const {
+      id,
+      name,
+      firstName,
+      lastName,
+      phoneNumber,
+      address,
+      area,
+      details,
+    } = req.body;
+
+    if (!Object.values(Area).includes(area)) {
       return res.status(400).json({
-        message: `Have not Area ${data.area}`,
+        message: `Have not Area ${area}`,
       });
     }
-    if (!Object.values(RentalType).includes(data.rentalType)) {
-      return res.status(400).json({
-        message: `Have not rentalType ${data.rentalType}`,
-      });
-    }
 
-    const store = await storeService.updateStore(data);
+    const store = await Store.update(
+      { name, firstName, lastName, phoneNumber, address, area, details },
+      { where: { id: id } }
+    );
     if (!store) {
       return res.status(500).json({ message: "Fail to UpdateStore" });
     }
@@ -99,51 +181,26 @@ const updateStore = async (req: RequestAndUser, res: Response) => {
   }
 };
 
-const deleteStore = async (req: RequestAndUser, res: Response) => {
+const deleteStoreByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
   try {
     const { id } = req.body;
-    const store: IStore | null = await storeService.getStoreById(id);
+    const store: Model<IStore> | null = await Store.findByPk(id);
     if (!store) {
       return res.status(400).json({ message: "Store not found" });
     }
-    await storeService.deleteStore(store.id);
-    await userService.deleteUser(store.userId);
+    await Store.destroy({ where: { id: store.dataValues.id } });
+    await User.destroy({ where: { id: store.dataValues.userId } });
     return res.status(201).json({ message: "Delete success" });
   } catch (error) {
     return res.status(500).json({ message: "Fail to create" });
   }
 };
 
-const getStoreParty = async (req: RequestAndUser, res: Response) => {
-  const { id, role, party } = req.user!;
-  if (role !== "admin") {
-    const store: IStore | null = await storeService.getStoreByUserId(id!);
-    if (!store) {
-      return res.status(400).json({ message: "Store not found" });
-    }
-    return res.status(200).json(store);
-  } else {
-    const stores: IStore[] | null = await storeService.getStoresParty(party!);
-    if (!stores) {
-      return res.status(400).json({ message: "Store not found" });
-    }
-    return res.status(200).json(stores);
-  }
-};
-
-const getAreaStoreParty = async (req: RequestAndUser, res: Response) => {
-  const { party } = req.user!;
-  const areas: Area[] | null = await storeService.getAreaStoresParty(party!);
-  if (!areas) {
-    return res.status(400).json({ message: "Store not found" });
-  }
-  return res.status(200).json(areas);
-};
-
 export default {
-  createStore,
-  updateStore,
-  deleteStore,
-  getStoreParty,
-  getAreaStoreParty,
+  createStoreAndUserOfStore,
+  getStoreByLand,
+  getAreaStoreHas,
+  updateStoreByOwnerOfLand,
+  deleteStoreByOwnerOfLand
+
 };
