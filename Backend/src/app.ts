@@ -28,6 +28,15 @@ cron.schedule(
     timezone: "Asia/Bangkok",
   }
 );
+// cron.schedule(
+//   "*/10 * * * * *",
+//   async() => {
+//     await billController.generateBillsForAllStores();
+//   },
+//   {
+//     timezone: "Asia/Bangkok",
+//   }
+// );
 
 app.listen(process.env.PORT!, async () => {
   await sequelize.sync();

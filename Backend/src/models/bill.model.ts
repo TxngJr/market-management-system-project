@@ -1,6 +1,5 @@
 import { sequelize } from "../config/database";
-import { DataTypes } from 'sequelize';
-
+import { DataTypes } from "sequelize";
 
 export const Bill = sequelize.define("bills", {
   id: {
@@ -51,11 +50,23 @@ export const Bill = sequelize.define("bills", {
     defaultValue: 0,
     field: "waterUnit",
   },
+  waterUnitBefore: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+    field: "waterUnitBefore",
+  },
   electricityUnit: {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,
     field: "electricityUnit",
+  },
+  electricityUnitBefore: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+    field: "electricityUnitBefore",
   },
   landId: {
     type: DataTypes.INTEGER,

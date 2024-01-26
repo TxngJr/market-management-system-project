@@ -5,17 +5,22 @@ import authMiddleware from "../middlewares/auth.middleware";
 const router = Router();
 router.get(
   "/",
-  // authMiddleware.authenticateToken ,
+  authMiddleware.authenticateToken ,
   billController.getBills
 );
 router.get(
   "/owner",
-  // authMiddleware.authenticateToken ,
+  authMiddleware.authenticateToken ,
   billController.getBillsByOwner
+);
+router.get(
+  "/bill/:id",
+  authMiddleware.authenticateToken ,
+  billController.getBill
 );
 router.put(
   "/:id",
-  // authMiddleware.authenticateToken ,
+  authMiddleware.authenticateToken ,
   billController.updateBill
 );
 

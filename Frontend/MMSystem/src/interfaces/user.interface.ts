@@ -1,16 +1,28 @@
 export interface IUser {
   id: number;
+  imagePath?: string;
+  firstName: string;
+  lastName: string;
   username: string;
-  role: Role;
-  party?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  hashPassword?: string;
+  email: string;
+  address: string;
+  phoneNumber: string;
+  isOwner: boolean;
+  landId: number | null;
+  storeId: number | null;
+  createAt: Date;
 }
 
 export interface IRegisterForm {
+  firstName: string;
+  lastName: string;
   username: string;
   password: string;
   confirmPassword: string;
+  email: string;
+  address: string;
+  phoneNumber: string;
 }
 
 export interface IRegisterApiRequest {
@@ -45,4 +57,3 @@ export const enum Role {
   ADMIN = 'admin',
   USER = 'user',
 }
-

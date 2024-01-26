@@ -1,59 +1,58 @@
 import React, { useState, createContext, ReactNode, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IUser } from '../interfaces/user.interface';
+import { axiosInstance } from '../axiosRequest';
 
 interface AuthContextType {
-  token: string | null;
-  saveToken: (token: string) => void;
-  removeToken: () => void;
+  user: IUser | null;
+  saveUser: (token: string) => void;
+  removeUser: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
-  token: null,
-  saveToken: () => { },
-  removeToken: () => { }
+  user: null,
+  saveUser: () => { },
+  removeUser: () => { }
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
 
   useEffect(() => {
     const checkToken = async () => {
       let token;
-
       try {
         token = await AsyncStorage.getItem('token');
       } catch (error) {
         console.log(error);
       }
-      if (token) {
-        setToken(token);
-      } else {
-        setToken(null);
-      }
+      const response = await axiosInstance.get('/users/self');
+      setUser(response.data);
     }
     checkToken();
   }, []);
 
-
-  const saveToken = async (token: string) => {
+  const saveUser = async (token: string) => {
     try {
       await AsyncStorage.setItem('token', token);
-      setToken(token);
+      const response = await axiosInstance.get('/users/self');
+      setUser(response.data);
     } catch (error) {
       console.log(error)
     }
   }
-  const removeToken = async () => {
+
+  const removeUser = async () => {
     try {
       await AsyncStorage.removeItem('token');
-      setToken(null);
+      setUser(null);
     } catch (error) {
       console.log(error)
     }
   }
 
   return (
-    <AuthContext.Provider value={{ token, saveToken, removeToken }}>
+    <AuthContext.Provider value={{ user, saveUser, removeUser }}>
       {children}
     </AuthContext.Provider>
   );
