@@ -157,64 +157,80 @@ const updateSelf = async (req: RequestAndUser, res: Response) => {
   return res.status(200).json({ message: "Update success" });
 };
 
-const getUsersByLand = async (req: RequestAndUser, res: Response) => {
-  try{
-  const user: IUser = req.user!;
-  const findUsersByLand: Model<IUser>[] | null = await User.findAll({
-    where: {
-      landId: user.landId,
-      id: { [Op.ne]: user.id },
-    },
-    attributes: { exclude: ["hashPassword"] },
-  });
-  return res.status(200).json(findUsersByLand);
-} catch (error) {
-  return res.status(500).json({ message: "Something went wrong" });
+const getUsers = async (req: RequestAndUser, res: Response) => {
+  try {
+    const user: IUser = req.user!;
+    const findUsersByLand: Model<IUser>[] | null = await User.findAll({
+      where: {
+        landId: user.landId,
+        id: { [Op.ne]: user.id },
+      },
+      attributes: { exclude: ["hashPassword"] },
+    });
+    return res.status(200).json(findUsersByLand);
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
 };
-}
 
-const updateUserByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
-  try{
-  const {
-    id,
-    imagePath,
-    firstName,
-    lastName,
-    email,
-    address,
-    phoneNumber,
-  }: {
-    id: number;
-    imagePath?: string;
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    address?: string;
-    phoneNumber?: string;
-  } = req.body;
+const getUserById = async (req: RequestAndUser, res: Response) => {
+  try {
+    const user: IUser = req.user!;
+    const { id } = req.params;
+    const findUserById: Model<IUser>[] | null = await User.findAll({
+      where: {
+        id
+      },
+      attributes: { exclude: ["hashPassword"] },
+    });
+    return res.status(200).json(findUserById);
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
 
-  const updateUser: any = await User.update(
-    {
+const updateUser = async (req: RequestAndUser, res: Response) => {
+  try {
+    const {
+      id,
       imagePath,
       firstName,
       lastName,
       email,
       address,
       phoneNumber,
-    },
-    {
-      where: {
-        id: id,
+    }: {
+      id: number;
+      imagePath?: string;
+      firstName?: string;
+      lastName?: string;
+      email?: string;
+      address?: string;
+      phoneNumber?: string;
+    } = req.body;
+
+    const updateUser: any = await User.update(
+      {
+        imagePath,
+        firstName,
+        lastName,
+        email,
+        address,
+        phoneNumber,
       },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+    if (!updateUser) {
+      return res.status(404).json({ message: "Fail to update" });
     }
-  );
-  if (!updateUser) {
-    return res.status(404).json({ message: "Fail to update" });
+    return res.status(200).json({ message: "Update success" });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
   }
-  return res.status(200).json({ message: "Update success" });
-} catch (error) {
-  return res.status(500).json({ message: "Something went wrong" });
-}
 };
 
 export default {
@@ -222,6 +238,7 @@ export default {
   login,
   self,
   updateSelf,
-  getUsersByLand,
-  updateUserByOwnerOfLand
+  getUsers,
+  getUserById,
+  updateUser,
 };

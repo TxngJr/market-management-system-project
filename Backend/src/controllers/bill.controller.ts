@@ -34,7 +34,7 @@ async function generateBillsForAllStores() {
   }
 }
 
-const getBillsByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
+const getBillsByOwner = async (req: RequestAndUser, res: Response) => {
   try {
     const { month, year } = req.query;
     const findBillsByLand: Model<IBill>[] | null = await Bill.findAll({
@@ -57,7 +57,8 @@ const getBillsByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
-const getBillsByLand = async (req: RequestAndUser, res: Response) => {
+
+const getBills = async (req: RequestAndUser, res: Response) => {
   try {
     const user = req.user!;
     const { month, year } = req.query;
@@ -82,7 +83,7 @@ const getBillsByLand = async (req: RequestAndUser, res: Response) => {
   }
 };
 
-const updateBillByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
+const updateBill = async (req: RequestAndUser, res: Response) => {
   try {
     const {
       id,
@@ -119,7 +120,7 @@ const updateBillByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
 
 export default {
   generateBillsForAllStores,
-  getBillsByOwnerOfLand,
-  getBillsByLand,
-  updateBillByOwnerOfLand
+  getBillsByOwner,
+  getBills,
+  updateBill
 };

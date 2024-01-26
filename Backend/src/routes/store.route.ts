@@ -6,13 +6,13 @@ const router = Router();
 router.post(
   "/create-store",
   authMiddleware.authenticateToken,
-  storeController.createStoreAndUserOfStore
+  storeController.createStoreAndUser
 );
 
 router.get(
-  "/get-stores-by-land",
+  "/get-stores",
   authMiddleware.authenticateToken,
-  storeController.getStoreByLand
+  storeController.getStore
 );
 
 router.get(
@@ -23,15 +23,15 @@ router.get(
 router.put(
   "/update-store",
   authMiddleware.authenticateToken,
-  accessPermissionMiddleware.accessPermission,
-  storeController.updateStoreByOwnerOfLand
+  // accessPermissionMiddleware.accessPermission,
+  storeController.updateStore
 );
 
 router.delete(
   "/delete-store",
   authMiddleware.authenticateToken,
-  accessPermissionMiddleware.accessPermission,
-  storeController.deleteStoreByOwnerOfLand
+  // accessPermissionMiddleware.accessPermission,
+  storeController.deleteStore
 );
 
 export default router;

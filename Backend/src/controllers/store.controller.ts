@@ -9,7 +9,7 @@ import { Store } from "../models/store.model";
 
 dotenv.config();
 
-const createStoreAndUserOfStore = async (
+const createStoreAndUser = async (
   req: RequestAndUser,
   res: Response
 ) => {
@@ -121,7 +121,7 @@ const createStoreAndUserOfStore = async (
   }
 };
 
-const getStoreByLand = async (req: RequestAndUser, res: Response) => {
+const getStore = async (req: RequestAndUser, res: Response) => {
   try {
     const user: IUser = req.user!;
     const findUsersByLand: Model<IUser>[] | null = await Store.findAll({
@@ -149,7 +149,7 @@ const getAreaStoreHas = async (req: RequestAndUser, res: Response) => {
   return res.status(200).json(areas);
 };
 
-const updateStoreByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
+const updateStore = async (req: RequestAndUser, res: Response) => {
   try {
     const {
       id,
@@ -181,7 +181,7 @@ const updateStoreByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
   }
 };
 
-const deleteStoreByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
+const deleteStore = async (req: RequestAndUser, res: Response) => {
   try {
     const { id } = req.body;
     const store: Model<IStore> | null = await Store.findByPk(id);
@@ -197,10 +197,10 @@ const deleteStoreByOwnerOfLand = async (req: RequestAndUser, res: Response) => {
 };
 
 export default {
-  createStoreAndUserOfStore,
-  getStoreByLand,
+  createStoreAndUser,
+  getStore,
   getAreaStoreHas,
-  updateStoreByOwnerOfLand,
-  deleteStoreByOwnerOfLand
+  updateStore,
+  deleteStore
 
 };

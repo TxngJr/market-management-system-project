@@ -13,15 +13,21 @@ router.put(
   userController.updateSelf
 );
 router.get(
-  "/get-users-by-land",
+  "/",
   authMiddleware.authenticateToken,
-  userController.getUsersByLand
+  userController.getUsers
 );
+//wait for update middleware
+router.get(
+  '/:id', 
+  authMiddleware.authenticateToken
+  ,userController.getUserById
+)
 router.put(
-  "/update-user-by-owner-of-land",
+  "/",
   authMiddleware.authenticateToken,
-  accessPermissionMiddleware.accessPermission,
-  userController.updateUserByOwnerOfLand
+  // accessPermissionMiddleware.accessPermission,
+  userController.updateUser
 );
 
 export default router;

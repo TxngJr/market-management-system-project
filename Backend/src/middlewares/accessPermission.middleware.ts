@@ -24,8 +24,9 @@ const accessPermission = async (
     }
 
     if (user.landId !== findUser.dataValues.landId) {
-      return res.status(400).json({ message: "You are not owner" });
+      return res.status(400).json({ message: "You are not owner this id" });
     }
+    
     next();
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
