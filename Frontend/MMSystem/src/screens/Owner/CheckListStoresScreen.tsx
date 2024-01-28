@@ -1,75 +1,80 @@
-// import {
-//   ScrollView,
-//   StyleSheet,
-//   Text,
-//   TouchableOpacity,
-//   View,
-// } from 'react-native';
-// import React, {useContext, useState} from 'react';
-// import {IStore, IStoreGetPartyApiResponse} from '../interfaces/store.interface';
-// import {getAreaStorePartyApi, getStorePartyApi} from '../services/store.service';
-// import {AuthContext} from '../contexts/AuthContext';
-// import {ApiResponse} from '../interfaces/gobal.interface';
-// import {useFocusEffect} from '@react-navigation/native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import {IStore} from '../../interfaces/store.interface';
+import {Text, Divider, Button} from '@rneui/themed';
+import {axiosInstance} from '../../axiosRequest';
+import ArrowLeftSvgIcon from '../../assets/icons/ArrowLeftSVG';
 
-// interface CheckListStoresProps {
-//   navigation: any;
-// }
+interface CheckListStoresProps {
+  navigation: any;
+}
 
-// const CheckListStores: React.FC<CheckListStoresProps> = ({navigation}) => {
-//   const {token, removeToken} = useContext(AuthContext);
-//   const [listStore, setListStore] = useState<IStore[]>();
+const CheckListStores: React.FC<CheckListStoresProps> = ({navigation}) => {
+  const [listStores, setListStores] = useState<IStore[]>();
 
-//   const fetchStoreData = async () => {
-//     const stores: ApiResponse<IStoreGetPartyApiResponse> =
-//     await getStorePartyApi(token!);
-//     if (!stores.status) {
-//       return removeToken();
-//     }
-//     if (!Array.isArray(stores.data)) {
-//       return setListStore([stores.data]);
-//     }
-//     return setListStore(stores.data);
-//   };
+  const fetchStoreData = async () => {
+    const response = await axiosInstance.get('/stores/get-stores');
+    setListStores(response.data);
+  };
 
-//   useFocusEffect(
-//     React.useCallback(() => {
-//       fetchStoreData();
-//     }, [navigation]),
-//   );
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchStoreData();
+    }, [navigation]),
+  );
 
-//   return (
-//     <View>
-//       <View>
-//         <Text>รายชื่อร้านค้า</Text>
-//       </View>
-//       <View style={{height: 600}}>
-//         {listStore && (
-//           <ScrollView>
-//             {listStore?.map((store: IStore, index) => (
-//               <TouchableOpacity
-//                 key={index}
-//                 onPress={() =>
-//                   navigation.navigate('EditStore', {storeProps: store})
-//                 }>
-//                 <View>
-//                   <Text>{store.storeName}</Text>
-//                   <Text>โซน {store.area}</Text>
-//                 </View>
-//               </TouchableOpacity>
-//             ))}
-//           </ScrollView>
-//         )}
-//       </View>
-//       <View>
-//         <TouchableOpacity onPress={() => navigation.navigate('AddStore')}>
-//           <Text>เพิ่มร้านค้า</Text>
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   );
-// };
+  return (
+    <View
+      style={{
+        paddingHorizontal: 10,
+        paddingVertical: 20,
+        backgroundColor: '#ffffff',
+        flex: 1,
+      }}>
+      <View style={{flexDirection:"row"}}>
+        <TouchableOpacity onPress={()=>navigation.goBack()} >
+          <ArrowLeftSvgIcon />
+        </TouchableOpacity>
+        <Text h3>รายชื่อร้านค้า</Text>
+      </View>
+      <View style={{flex: 9,paddingHorizontal:30}}>
+        {listStores && (
+          <ScrollView>
+            {listStores?.map((store: IStore, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() =>
+                  navigation.navigate('EditStore', {storeProps: store})
+                }>
+                <View>
+                  <Text h4>{store.name}</Text>
+                  <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                    โซน {store.area.toUpperCase()}
+                  </Text>
+                </View>
+                <Divider />
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
+      </View>
+      <View style={{flex: 1, alignItems: 'center'}}>
+        <Button
+          buttonStyle={{
+            width: 200,
+            borderRadius: 10,
+          }}
+          titleStyle={{fontWeight: 'bold', fontSize: 23}}
+          size="md"
+          onPress={e => navigation.navigate('AddStore')}>
+          เพิ่มร้านค้า
+        </Button>
+      </View>
+    </View>
+  );
+};
 
-// export default CheckListStores;
+export default CheckListStores;
 
-// const styles = StyleSheet.create({});
+const styles = StyleSheet.create({});

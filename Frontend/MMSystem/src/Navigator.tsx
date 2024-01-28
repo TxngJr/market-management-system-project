@@ -10,7 +10,9 @@ import {AuthContext} from './contexts/AuthContext';
 // import AddStoreScreen from './screens/AddStoreScreen';
 // import MapStoreScreen from './screens/MapStoreScreen';
 import {Text, View} from 'react-native';
-import ProfileScreen from './screens/Owner/ProfileScreen';
+// import ProfileScreen from './screens/Owner/ProfileScreen';
+import CheckListStoresScreen from './screens/Owner/CheckListStoresScreen';
+// import AddStoreScreen from './screens/Owner/AddStoreScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,17 +51,18 @@ export default function Navigator() {
             {user.isOwner ? (
               <>
                 <Stack.Screen name="Home" component={HomeScreen} />
-                <Stack.Screen name="Profile" component={ProfileScreen} />
-                {/* <Stack.Screen
+                {/* <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen
                   name="CheckListStores"
                   component={CheckListStoresScreen}
                 />
-                <Stack.Screen name="EditStore" component={EditStoreScreen} />
                 <Stack.Screen name="AddStore" component={AddStoreScreen} />
+                <Stack.Screen name="EditStore" component={EditStoreScreen} />
                 <Stack.Screen name="MapStore" component={MapStoreScreen} /> */}
               </>
             ) : (
-              <Stack.Screen name="Home" component={HomeScreen} />
+              // <Stack.Screen name="Home" component={HomeScreen} />
+              <></>
             )}
           </>
         ) : (

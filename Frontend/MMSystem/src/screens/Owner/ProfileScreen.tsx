@@ -1,185 +1,220 @@
-import {Text, TextInput, Touchable, TouchableOpacity, View} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
-import {AuthContext} from '../../contexts/AuthContext';
+// import {Alert, View} from 'react-native';
+// import React, {useContext, useEffect, useState} from 'react';
+// import {AuthContext} from '../../contexts/AuthContext';
+// import {useFormik} from 'formik';
+// import * as Yup from 'yup';
+// import {axiosInstance} from '../../axiosRequest';
+// import LogoComponents from '../../components/LogoComponents';
+// import PersonSvgIcon from '../../assets/icons/PersonSVG';
+// import { IResponseApiDefault } from '../../interfaces/responseApi.interface';
+// import { Button } from '@ui-kitten/components';
 
-type Props = {
-  navigation:any
-};
+// type Props = {
+//   navigation: any;
+// };
 
-const ProfileScreen = (props: Props) => {
-  const {user} = useContext(AuthContext);
-  const [formUser, setFormUser] = useState({
-    username: '',
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    address: '',
-  });
+// interface IUserForm {
+//   username: string;
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber: string;
+//   address: string;
+// }
 
-  useEffect(() => {
-    const fetchData = () => {
-      setFormUser({
-        username: user?.username!,
-        firstName: user?.firstName!,
-        lastName: user?.lastName!,
-        phoneNumber: user?.phoneNumber!,
-        address: user?.address!,
-      });
-    };
-    fetchData();
-  }, []);
-  return (
-    <View
-      style={{
-        paddingHorizontal: 20,
-        paddingVertical: 20,
-        backgroundColor: '#ffffff',
-        flex: 1,
-      }}>
-      <Text style={{fontSize: 40, color: '#000000'}}>ข้อมูลผู้ใช้</Text>
-      <View style={{flex: 1, paddingVertical: 50}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontSize: 24, color: '#000000', marginRight: 50}}>
-            ชื่อผู้ใช้
-          </Text>
-          <TextInput
-            style={{
-              borderRadius: 10,
-              backgroundColor: '#D9D9D9',
-              width: 210,
-              textAlign: 'center',
-              fontSize: 24,
-            }}
-            value={formUser?.username}
-            onChangeText={(text: string) =>
-              setFormUser({...formUser!, username: text})
-            }
-            placeholder="ชื่อผู้ใช้"
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 20,
-          }}>
-          <Text style={{fontSize: 24, color: '#000000', marginRight: 50}}>
-            ชื่อ
-          </Text>
-          <TextInput
-            style={{
-              borderRadius: 10,
-              backgroundColor: '#D9D9D9',
-              width: 210,
-              textAlign: 'center',
-              fontSize: 24,
-            }}
-            value={formUser?.firstName}
-            onChangeText={(text: string) =>
-              setFormUser({...formUser!, firstName: text})
-            }
-            placeholder="ชื่อ"
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 20,
-          }}>
-          <Text style={{fontSize: 24, color: '#000000', marginRight: 50}}>
-            นามสกุล
-          </Text>
-          <TextInput
-            style={{
-              borderRadius: 10,
-              backgroundColor: '#D9D9D9',
-              width: 210,
-              textAlign: 'center',
-              fontSize: 24,
-            }}
-            value={formUser?.lastName}
-            onChangeText={(text: string) =>
-              setFormUser({...formUser!, lastName: text})
-            }
-            placeholder="นามสกุล"
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 20,
-          }}>
-          <Text style={{fontSize: 24, color: '#000000', marginRight: 50}}>
-            เบอร์ติดต่อ
-          </Text>
-          <TextInput
-            style={{
-              borderRadius: 10,
-              backgroundColor: '#D9D9D9',
-              width: 210,
-              textAlign: 'center',
-              fontSize: 24,
-            }}
-            value={formUser?.phoneNumber}
-            onChangeText={(text: string) =>
-              setFormUser({...formUser!, phoneNumber: text})
-            }
-            placeholder="เบอร์ติดต่อ"
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 20,
-          }}>
-          <Text style={{fontSize: 24, color: '#000000', marginRight: 50}}>
-            ที่อยู่
-          </Text>
-          <TextInput
-            style={{
-              borderRadius: 10,
-              backgroundColor: '#D9D9D9',
-              width: 210,
-              textAlign: 'center',
-              fontSize: 24,
-            }}
-            multiline
-            value={formUser?.address}
-            onChangeText={(text: string) =>
-              setFormUser({...formUser!, address: text})
-            }
-            placeholder="ที่อยู่"
-          />
-        </View>
-      </View>
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-end'}}>
-        <TouchableOpacity
-        onPress={() => props.navigation.goBack()}
-            style={{
-              backgroundColor: '#EAE334',
-              width: 300,
-              height: 60,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 30,
-            }}>
-            <Text style={{fontSize: 32, color: '#000000'}}>ย้อนกลับ</Text>
-          </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
+// const validationSchema = Yup.object({
+//   username: Yup.string()
+//     .min(3, 'กรุณากรอกอักขระ 3 ตัวขึ้นไป')
+//     .max(30, 'กรุณากรอกอักขระไม่เกิน 30 ตัวอักษร')
+//     .required('กรุณากรอกชื่อผู้ใช้'),
+//   firstName: Yup.string()
+//     .min(2, 'กรุณากรอกอักขระ 2 ตัวขึ้นไป')
+//     .max(50, 'กรุณากรอกอักขระไม่เกิน 50 ตัวอักษร')
+//     .required('กรุณากรอกชื่อจริง'),
+//   lastName: Yup.string()
+//     .min(2, 'กรุณากรอกอักขระ 2 ตัวขึ้นไป')
+//     .max(50, 'กรุณากรอกอักขระไม่เกิน 50 ตัวอักษร')
+//     .required('กรุณากรอกนามสกุล'),
+//   phoneNumber: Yup.string()
+//     .matches(/^\d{10}$/, 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง')
+//     .required('กรุณากรอกเบอร์โทรศัพท์'),
+//   address: Yup.string().required('กรุณากรอกที่อยู่'),
+// });
 
-export default ProfileScreen;
+// const ProfileScreen = (props: Props) => {
+//   const {user} = useContext(AuthContext);
+//   const [isEdit, setIsEdit] = useState<boolean>(false);
+//   useEffect(() => {
+//     const fetchData = () => {
+//       formik.setFieldValue('username', user?.username!);
+//       formik.setFieldValue('firstName', user?.firstName!);
+//       formik.setFieldValue('lastName', user?.lastName!);
+//       formik.setFieldValue('phoneNumber', user?.phoneNumber!);
+//       formik.setFieldValue('address', user?.address!);
+//     };
+//     fetchData();
+//   }, []);
+
+//   const formik = useFormik({
+//     initialValues: {
+//       username: '',
+//       firstName: '',
+//       lastName: '',
+//       phoneNumber: '',
+//       address: '',
+//     } as IUserForm,
+//     validationSchema: validationSchema,
+//     onSubmit: async (values: IUserForm) => {
+//       const response = await axiosInstance.put<IResponseApiDefault>('/users/self', {
+//         imagePath: '',
+//         username: values.username,
+//         firstName: values.firstName,
+//         lastName: values.lastName,
+//         phoneNumber: values.phoneNumber,
+//         address: values.address,
+//       });
+//       if (response.data) {
+//         Alert.alert('แก้ไขข้อมูลสำเร็จ');
+//         setIsEdit(false);
+//       } else {
+//         Alert.alert('แก้ไขข้อมูลไม่สำเร็จ');
+//       }
+//     },
+//   });
+
+//   return (
+//     <View
+//       style={{
+//         paddingHorizontal: 20,
+//         paddingVertical: 30,
+//         backgroundColor: '#ffffff',
+//         flex: 1,
+//       }}>
+//       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+//         <LogoComponents />
+//         <Button
+//           color={isEdit ? 'error' : 'warning'}
+//           buttonStyle={{
+//             width: 90,
+//             borderRadius: 10,
+//           }}
+//           titleStyle={{fontWeight: 'bold', fontSize: 23}}
+//           size="sm"
+//           onPress={e => setIsEdit(!isEdit)}>
+//           {isEdit ? 'ยกเลิก' : 'แก้ไข'}
+//         </Button>
+//       </View>
+//       <View style={{alignItems: 'center', flex: 1}}>
+//         <PersonSvgIcon />
+//         <Text h4 style={{fontSize: 28, color: '#000000'}}>
+//           แก้ไขข้อมูลส่วนตัว
+//         </Text>
+//         <View style={{paddingTop: 10, width: 310}}>
+//           <Input
+//             disabled={true}
+//             style={{fontSize: 20, paddingLeft: 10, padding: 0}}
+//             placeholder="ชื่อผู้ใช้"
+//             id="username"
+//             onChange={e => formik.setFieldValue('username', e.nativeEvent.text)}
+//             onBlur={() => formik.setFieldTouched('username')}
+//             value={formik.values.username}
+//             errorStyle={{color: 'red'}}
+//             errorMessage={
+//               formik.touched.username && formik.errors.username
+//                 ? formik.errors.username
+//                 : undefined
+//             }
+//           />
+//         </View>
+//         <View style={{width: 310}}>
+//           <Input
+//             disabled={!isEdit}
+//             style={{fontSize: 20, paddingLeft: 10, padding: 0}}
+//             placeholder="ชื่อจริง"
+//             id="firstName"
+//             onChange={e =>
+//               formik.setFieldValue('firstName', e.nativeEvent.text)
+//             }
+//             onBlur={() => formik.setFieldTouched('firstName')}
+//             value={formik.values.firstName}
+//             errorStyle={{color: 'red'}}
+//             errorMessage={
+//               formik.touched.firstName && formik.errors.firstName
+//                 ? formik.errors.firstName
+//                 : undefined
+//             }
+//           />
+//         </View>
+//         <View style={{width: 310}}>
+//           <Input
+//             disabled={!isEdit}
+//             style={{fontSize: 20, paddingLeft: 10, padding: 0}}
+//             placeholder="นามสกุล"
+//             id="lastName"
+//             onChange={e => formik.setFieldValue('lastName', e.nativeEvent.text)}
+//             onBlur={() => formik.setFieldTouched('lastName')}
+//             value={formik.values.lastName}
+//             errorStyle={{color: 'red'}}
+//             errorMessage={
+//               formik.touched.lastName && formik.errors.lastName
+//                 ? formik.errors.lastName
+//                 : undefined
+//             }
+//           />
+//         </View>
+//         <View style={{width: 310}}>
+//           <Input
+//             disabled={!isEdit}
+//             style={{fontSize: 20, paddingLeft: 10, padding: 0}}
+//             placeholder="เบอร์โทรศัพท์"
+//             id="phoneNumber"
+//             onChange={e =>
+//               formik.setFieldValue('phoneNumber', e.nativeEvent.text)
+//             }
+//             onBlur={() => formik.setFieldTouched('phoneNumber')}
+//             value={formik.values.phoneNumber}
+//             errorStyle={{color: 'red'}}
+//             errorMessage={
+//               formik.touched.phoneNumber && formik.errors.phoneNumber
+//                 ? formik.errors.phoneNumber
+//                 : undefined
+//             }
+//           />
+//         </View>
+//         <View style={{width: 310}}>
+//           <Input
+//             disabled={!isEdit}
+//             style={{fontSize: 20, paddingLeft: 10, padding: 0}}
+//             placeholder="ที่อยู่"
+//             id="address"
+//             onChange={e => formik.setFieldValue('address', e.nativeEvent.text)}
+//             onBlur={() => formik.setFieldTouched('address')}
+//             value={formik.values.address}
+//             errorStyle={{color: 'red'}}
+//             errorMessage={
+//               formik.touched.address && formik.errors.address
+//                 ? formik.errors.address
+//                 : undefined
+//             }
+//           />
+//         </View>
+//         <View style={{flex: 1, justifyContent: 'flex-end', paddingBottom: 30}}>
+//           <Button
+//             color={isEdit ? 'success' : 'warning'}
+//             buttonStyle={{
+//               width: 300,
+//               borderRadius: 10,
+//             }}
+//             titleStyle={{fontWeight: 'bold', fontSize: 23}}
+//             size="md"
+//             onPress={e =>
+//               isEdit ? formik.handleSubmit() : props.navigation.goBack()
+//             }>
+//             {isEdit ? ' บันทึก' : 'ย้อนกลับ'}
+//           </Button>
+//         </View>
+//       </View>
+//     </View>
+//   );
+// };
+
+// export default ProfileScreen;

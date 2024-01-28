@@ -1,66 +1,51 @@
-import { IRegisterApiRequest } from './user.interface';
-
 export interface IStore {
   id: number;
-  userId: number;
-  imagePath: string;
-  storeName: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  address: string;
+  imagePath?: string;
+  name: string;
   area: Area;
-  rentalType: RentalType;
-  party: number;
+  details?: string;
+  rentPrice: number;
+  landId: number;
+  userId: number;
+  createAt: Date;
   createdAt?: string;
   updatedAt?: string;
 }
 
-export interface IStoreFormRegister {
-  imagePath: string;
-  storeName: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  address: string;
-  area: Area;
-  rentalType: RentalType;
-}
+// export interface IStoreFormRegister {
+//   imagePath: string;
+//   storeName: string;
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber: string;
+//   address: string;
+//   area: Area;
+//   rentalType: RentalType;
+// }
 
-export interface IStoreCreateApiRequest {
-  store: IStoreFormRegister;
-  user: IRegisterApiRequest;
-}
+// export interface IStoreUpdateFormAndApiRequest {
+//   id: number;
+//   imagePath: string;
+//   storeName: string;
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber: string;
+//   address: string;
+//   area: Area;
+//   rentalType: RentalType;
+// }
 
-export interface IStoreUpdateFormAndApiRequest {
-  id: number;
-  imagePath: string;
-  storeName: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  address: string;
-  area: Area;
-  rentalType: RentalType;
-}
-
-export interface IStoreGetPartyApiResponse {
-  id: number;
-  imagePath: string;
-  storeName: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  address: string;
-  area: Area;
-  rentalType: RentalType;
-}
-
-
-export enum RentalType {
-  MONTH = "month",
-  YEAR = "year",
-}
+// export interface IStoreGetPartyApiResponse {
+//   id: number;
+//   imagePath: string;
+//   storeName: string;
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber: string;
+//   address: string;
+//   area: Area;
+//   rentalType: RentalType;
+// }
 
 export enum Area {
   A1 = 'a1',

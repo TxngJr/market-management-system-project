@@ -1,17 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from 'react';
+import {Layout, Text} from '@ui-kitten/components';
 
-type Props = {}
-
-const LogoComponents = (props: Props) => {
+const LogoComponents = () => {
   return (
-    <View>
-      <Text style={{
-        fontSize: 64,
-        color: '#000000',
-      }}>MMGs</Text>
-    </View>
-  )
-}
+    <Layout>
+      <Text category="h1">MMGs</Text>
+    </Layout>
+  );
+};
 
-export default LogoComponents
+export default LogoComponents;

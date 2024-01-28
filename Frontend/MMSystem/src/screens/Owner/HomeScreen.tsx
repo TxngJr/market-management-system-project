@@ -8,17 +8,12 @@ import PersonSvgIcon from '../../assets/icons/PersonSVG';
 import NoteSvgIcon from '../../assets/icons/NoteSVG';
 import CardMoneySvgIcon from '../../assets/icons/CardMoneySVG';
 import MapSvgIcon from '../../assets/icons/MapSVG';
+import {Layout} from '@ui-kitten/components';
 
 const HomeScreen: React.FC<any> = ({navigation}) => {
   const {removeUser} = useContext(AuthContext);
   return (
-    <View
-      style={{
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        backgroundColor: '#ffffff',
-        flex: 1,
-      }}>
+    <Layout style={{flex: 1, justifyContent: 'center', paddingHorizontal: 10}}>
       <View
         style={{
           flexDirection: 'row',
@@ -26,10 +21,8 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
           alignItems: 'center',
         }}>
         <LogoComponents />
-        <TouchableOpacity
-        onPress={() => navigation.navigate('Profile')}
-        >
-        <PersonSvgIcon />
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <PersonSvgIcon />
         </TouchableOpacity>
       </View>
       <View style={{flex: 1, paddingVertical: 50}}>
@@ -40,7 +33,7 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
               flexDirection: 'row',
             }}>
             <TouchableOpacity
-              // onPress={() => navigation.navigate('CheckListStores')}
+              onPress={() => navigation.navigate('CheckListStores')}
               style={{
                 flex: 1,
                 borderRadius: 50,
@@ -48,10 +41,11 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 margin: 5,
-                
               }}>
               <StoreSvgIcon />
-              <Text style={{fontSize: 24,color:"#000000"}}>รายชื่อร้านค้า</Text>
+              <Text style={{fontSize: 24, color: '#000000'}}>
+                รายชื่อร้านค้า
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               // onPress={() => navigation.navigate('CheckListStores')}
@@ -64,7 +58,7 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
                 margin: 5,
               }}>
               <CalSvgIcon />
-              <Text style={{fontSize: 24,color:"#000000"}}>ค่าเช่า</Text>
+              <Text style={{fontSize: 24, color: '#000000'}}>ค่าเช่า</Text>
             </TouchableOpacity>
           </View>
           <View
@@ -83,7 +77,7 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
                 margin: 5,
               }}>
               <NoteSvgIcon />
-              <Text style={{fontSize: 24,color:"#000000"}}>ราคา</Text>
+              <Text style={{fontSize: 24, color: '#000000'}}>ราคา</Text>
             </TouchableOpacity>
             <TouchableOpacity
               // onPress={() => navigation.navigate('CheckListStores')}
@@ -96,7 +90,7 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
                 margin: 5,
               }}>
               <CardMoneySvgIcon />
-              <Text style={{fontSize: 24,color:"#000000"}}>ชำระเงิน</Text>
+              <Text style={{fontSize: 24, color: '#000000'}}>ชำระเงิน</Text>
             </TouchableOpacity>
           </View>
           <View
@@ -115,9 +109,9 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
                 margin: 5,
               }}>
               <MapSvgIcon />
-              <Text style={{fontSize: 24,color:"#000000"}}>ผัง</Text>
+              <Text style={{fontSize: 24, color: '#000000'}}>ผัง</Text>
             </TouchableOpacity>
-            <View style={{flex: 1}}/>
+            <View style={{flex: 1}} />
           </View>
         </View>
       </View>
@@ -133,7 +127,7 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
         }}>
         <Text style={{fontSize: 32, color: '#000000'}}>ออกจากระบบ</Text>
       </TouchableOpacity>
-    </View>
+    </Layout>
   );
 };
 
