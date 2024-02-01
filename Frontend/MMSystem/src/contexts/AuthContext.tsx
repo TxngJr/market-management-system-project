@@ -20,14 +20,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const checkToken = async () => {
-      let token;
-      try {
-        token = await AsyncStorage.getItem('token');
-      } catch (error) {
+      try{
+        const response = await axiosInstance.get('/users/self');
+        setUser(response.data);
+      }catch(error){
         console.log(error);
       }
-      const response = await axiosInstance.get('/users/self');
-      setUser(response.data);
     }
     checkToken();
   }, []);
