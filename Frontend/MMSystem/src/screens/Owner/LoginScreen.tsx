@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useContext} from 'react';
-import {Alert, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, TouchableOpacity, View} from 'react-native';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 
@@ -9,6 +9,8 @@ import PersonSvgIcon from '../../assets/icons/PersonSVG';
 import LogoComponents from '../../components/LogoComponents';
 import {AuthContext} from '../../contexts/AuthContext';
 import {Button, Input, Layout, Text} from '@ui-kitten/components';
+import LogoSvgIcon from '../../assets/icons/LogoSVG';
+
 
 interface Props extends NativeStackScreenProps<any, any> {}
 
@@ -50,9 +52,8 @@ const LoginScreen: React.FC<Props> = ({navigation}: any) => {
 
   return (
     <Layout style={{flex: 1, justifyContent: 'center', paddingHorizontal: 10}}>
-      <LogoComponents />
       <View style={{alignItems: 'center', flex: 1}}>
-        <PersonSvgIcon />
+        <LogoSvgIcon size={300}/>
         <Text category="h2">เข้าสู่ระบบ</Text>
         <View style={{paddingTop: 25, width: 310}}>
           <Input

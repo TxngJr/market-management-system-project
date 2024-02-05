@@ -3,7 +3,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from './screens/Owner/HomeScreen';
 import LoginScreen from './screens/Owner/LoginScreen';
-import RegisterScreen from './screens/Owner/RegisterScreen';
+import RegisterForm1Screen from './screens/Owner/RegisterScreen/RegisterForm1';
+import RegisterForm2Screen from './screens/Owner/RegisterScreen/RegisterForm2';
 import {AuthContext} from './contexts/AuthContext';
 // import CheckListStoresScreen from './screens/CheckListStoresScreen';
 // import EditStoreScreen from './screens/EditStoreScreen';
@@ -68,7 +69,8 @@ export default function Navigator() {
         ) : (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Register" component={RegisterForm1Screen} />
+            <Stack.Screen name="RegisterNext" component={RegisterForm2Screen} />
           </>
         )}
       </Stack.Navigator>

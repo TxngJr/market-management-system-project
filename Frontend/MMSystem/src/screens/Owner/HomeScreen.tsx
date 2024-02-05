@@ -9,6 +9,7 @@ import NoteSvgIcon from '../../assets/icons/NoteSVG';
 import CardMoneySvgIcon from '../../assets/icons/CardMoneySVG';
 import MapSvgIcon from '../../assets/icons/MapSVG';
 import {Layout} from '@ui-kitten/components';
+import LogoSvgIcon from '../../assets/icons/LogoSVG';
 
 const HomeScreen: React.FC<any> = ({navigation}) => {
   const {removeUser} = useContext(AuthContext);
@@ -20,12 +21,12 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        <LogoComponents />
+        <LogoSvgIcon size={120}/>
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <PersonSvgIcon />
+          {/* <PersonSvgIcon /> */}
         </TouchableOpacity>
       </View>
-      <View style={{flex: 1, paddingVertical: 50}}>
+      <View style={{flex: 1}}>
         <View style={{flex: 1}}>
           <View
             style={{
